@@ -47,10 +47,11 @@ public class Managers : MonoBehaviour
     {
         if (!_manager)
         {
-            GameObject manager = GameObject.Find("@Managers");
+            GameObject manager = GameObject.FindWithTag("Manager");
             if (manager == null)
             {
-                manager = new GameObject() { name = "@Managers" };
+                manager = new GameObject($"{UtilityName.Manager}");
+                manager.tag = "Manager";
             }
             manager.AutoGetComponent<Managers>();
             _manager = manager.GetComponent<Managers>();
@@ -66,11 +67,16 @@ public class Managers : MonoBehaviour
             }
         }
     }
-
     #endregion
 
     void Start()
     {
-        Init();
+        //Init();
     }
+
+    private void Update()
+    {
+        InputManager.CheckKeyBoard();
+    }
+
 }

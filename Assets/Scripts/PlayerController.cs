@@ -43,5 +43,9 @@ public class PlayerController : MonoBehaviour
         {
             gameObject.transform.rotation *= Quaternion.Euler(Vector3.up * Time.deltaTime * rotation);
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+        }
     }
 }

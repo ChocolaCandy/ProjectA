@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    void Start()
+    public GameObject a;
+
+    private void Update()
     {
-       //TODO
+        transform.RotateAround(a.transform.position, Vector3.up, 20 * Time.deltaTime);
     }
 }

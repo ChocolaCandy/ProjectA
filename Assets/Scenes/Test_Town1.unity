@@ -713,18 +713,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1282559be3eefc244b2a1962c5bbe139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FocusPoint: {x: 0, y: 1, z: -6}
-  MaxFOV: 60
-  MixFOV: 30
-  MaxFocusZ: -7
-  ScrollSpeed: 5
-  Enlarge: 0
-  SmoothTime: 0.05
-  currentTime: 0
-  DefaultRadius: {x: 0, y: 1, z: -4}
-  text: {fileID: 1974031619}
   _focusObject: {fileID: 0}
   _camera: {fileID: 0}
+  ScrollSensitivity: 100
+  MinFOV: 20
+  MaxFOV: 60
+  MouseSensitivity: 10
+  _initDistance: 2
+  _defaultDistance: 5
+  _dirVector: {x: 0, y: 0, z: 0}
+  _distance: 0
+  _endPointFOV: 0
+  lerpTime: 1
 --- !u!1 &1079988941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1194,6 +1194,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5847284807735727846, guid: 3fec1f17a439d1744b17d63a9caa8638, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027265098339894850, guid: 3fec1f17a439d1744b17d63a9caa8638, type: 3}
+      propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8721465930341032307, guid: 3fec1f17a439d1744b17d63a9caa8638, type: 3}

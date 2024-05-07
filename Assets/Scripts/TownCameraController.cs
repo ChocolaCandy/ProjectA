@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -66,12 +63,14 @@ public class MainCameraController : MonoBehaviour
         ZoomInOut();
 
         //회전
-        dd();
+        RotatePlayer();
 
         //카메라 트랜스폼 변경
         _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, _endPointFOV, Time.deltaTime * 1.5f);
         transform.position = _focusObject.position + _endPointPosition;
-        transform.LookAt(_focusObject);
+
+        //Todo : bug fix inverse coordinate
+        //transform.LookAt(_focusObject, _focusObject.up);
     }
 
     #region Methods
@@ -126,15 +125,34 @@ public class MainCameraController : MonoBehaviour
     }
     #endregion
 
-    public void dd()
+    float min = -90.0f;
+    float max = 90.0f;
+    public float value = 0.0f;
+
+    public void RotatePlayer()
+    {
+        Rotate_AxisX();
+        Rotate_AxisY();
+    }
+
+    public void Rotate_AxisX()
     {
         float xMouseInput = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
-        float yMouseInput = Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
 
         Quaternion quaternion = Quaternion.AngleAxis(xMouseInput, _focusObject.transform.up);
-        Quaternion quaternion1 = Quaternion.AngleAxis(-yMouseInput, _focusObject.transform.right);
-        Vector3 vector2 = quaternion * quaternion1 * _endPointPosition;
-
+        Vector3 vector2 = quaternion * _endPointPosition;
         _endPointPosition = vector2;
+    }
+
+    public void Rotate_AxisY()
+    {
+        float yMouseInput = Input.GetAxis("Mouse Y") * MouseSensitivity * 0.5f * Time.deltaTime;
+        float angleValue = Mathf.Clamp(value + -yMouseInput, min, max);
+        if (angleValue <= min || angleValue >= max)
+            return;
+        Quaternion quaternion1 = Quaternion.AngleAxis(-yMouseInput, transform.right);
+        Vector3 afterY = quaternion1 * _endPointPosition;
+        value += -yMouseInput;
+        _endPointPosition = afterY;
     }
 }

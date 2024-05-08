@@ -1,66 +1,99 @@
 using System;
 using System.Collections;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
     public GameObject a;
-    [SerializeField] private float lerpTime = 1f;
-    private float currentTime;
-    float smoothTime = 0.12f;
-    int i = 0;
-    private float startTime;
-    public Camera ace;
-    public float after;
+    public Vector3 _endPointPosition;
+    float ads = 0.0f;
+
+    float min = -89.0f;
+    float max = 89.0f;
+    public float value = 0.0f;
+    public float _distance = 5.0f;
     private void Start()
     {
-        startTime = Time.time;
+        _endPointPosition = (transform.position - a.transform.position).normalized * _distance;
+        value = 0.0f;
+        transform.LookAt(a.transform);
     }
+    public float RotationSmoothTime = 0.12f;
+    public bool isChanged = false;
+    //private void LateUpdate()
+    //{
+    //   /* cc();
+    //        transform.position = a.transform.position + _endPointPosition;
+    //        //LookAtPlayer();
+    //    float ats = Mathf.Atan2(transform.position.y - a.transform.position.y, (transform.position - a.transform.position).magnitude) * Mathf.Rad2Deg;
+    //    Debug.Log($"after :" + ats);*/
+    //}
+
+    public void LookAtPlayer()
+    {
+        Quaternion ad = Quaternion.LookRotation((a.transform.position - transform.position).normalized);
+        transform.rotation = ad;
+        //transform.LookAt(a.transform);
+    }
+
+    //public void cc()
+    //{
+    //    aa();
+    //    dd();
+    //    Vector3 CheckV = a.transform.position + _endPointPosition;
+    //    float ats = Mathf.Atan2(CheckV.y - a.transform.position.y, (CheckV - a.transform.position).magnitude) * Mathf.Rad2Deg;
+    //    Debug.Log($"before :" + ats);
+    //}
+
+    //public void aa()
+    //{
+    //    float xMouseInput = Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
+    //    if (xMouseInput == 0)
+    //        return;
+    //    Quaternion quaternion = Quaternion.AngleAxis(xMouseInput, a.transform.up);
+    //    Vector3 vector2 = quaternion * _endPointPosition;
+    //    _endPointPosition = vector2;
+    //}
+
+    //public void dd()
+    //{
+    //    float yMouseInput = Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
+    //    if (yMouseInput == 0)
+    //        return;
+    //    Quaternion quaternion1 = Quaternion.AngleAxis(-yMouseInput, transform.right);
+    //    Vector3 afterY = quaternion1 * _endPointPosition;
+    //    value += -yMouseInput;
+    //    _endPointPosition = afterY;
+    //}
 
     private void LateUpdate()
     {
-        if (transform.position == a.transform.position)
-        {
-            Debug.Log($"{i} : ÀÏÄ¡");
-            return;
-        }
-        float t = Time.deltaTime;
-        ScrollUpDown();
-        currentTime += Time.deltaTime * smoothTime;
-        Debug.Log(currentTime);
-        if (currentTime >= lerpTime)
-        {
-            //t = lerpTime;
-        }
-
-        i++;
-        float fracComplete = (Time.time - startTime) / 1;
-        Debug.Log(fracComplete);
-        transform.position = Vector3.Lerp(transform.position, a.transform.position + RotateAround(), fracComplete);
-        ace.fieldOfView = Mathf.Lerp(ace.fieldOfView, after, Time.deltaTime);
+        newaa();
     }
-    public Vector3 RotateAround()
+
+    public void newaa()
     {
-
-        float xMouseInput = Input.GetAxis("Mouse X") * 500 * Time.deltaTime;
-        float yMouseInput = Input.GetAxis("Mouse Y") * 500 * Time.deltaTime;
-
-        Vector3 ad = transform.position - a.transform.position;
+        float xMouseInput = Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
+        if (xMouseInput == 0)
+            return;
         Quaternion quaternion = Quaternion.AngleAxis(xMouseInput, a.transform.up);
-        Quaternion quaternion1 = Quaternion.AngleAxis(-yMouseInput, a.transform.right);
-        Vector3 vector2 = quaternion * quaternion1 * ad;
-        return vector2;
-    }
-    private void ScrollUpDown()
-    {
-        float wheelInput = Input.GetAxis("Mouse ScrollWheel");
-        if (wheelInput == 0.0f)
-        {
-            return;
-        }
-        float afterRadius = Mathf.Clamp(ace.fieldOfView + -(wheelInput * 100), 20, 60);
-        after = afterRadius;
+        Vector3 beforeVector = transform.position;
+        Vector3 afterVerctor = quaternion * beforeVector;
+        //float ats = Mathf.Atan2(transform.position.x - a.transform.position.y, (transform.position - a.transform.position).magnitude) * Mathf.Rad2Deg;
+        Vector3 vector2 = quaternion * _endPointPosition;
+        _endPointPosition = vector2;
     }
 
+    public void dd()
+    {
+        float yMouseInput = Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
+        if (yMouseInput == 0)
+            return;
+        Quaternion quaternion1 = Quaternion.AngleAxis(-yMouseInput, transform.right);
+        Vector3 afterY = quaternion1 * _endPointPosition;
+        value += -yMouseInput;
+        _endPointPosition = afterY;
+    }
 }

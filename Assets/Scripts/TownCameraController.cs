@@ -1,78 +1,59 @@
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent (typeof (Camera))]
+[RequireComponent(typeof(CinemachineVirtualCamera))]
 public class MainCameraController : MonoBehaviour
 {
     [Header("Object")]
-    [SerializeField]
     [Tooltip("Transform to focus")]
-    private Transform _focusObject = null;
-    [SerializeField]
-    [Tooltip("Main camera component")]
-    private Camera _camera = null;
+    [SerializeField]  private Transform _focusObject;
+    [Tooltip("Cinemachine VirtualCamera")]
+    [SerializeField]  private CinemachineVirtualCamera _camera;
+    [Tooltip("Cinemachine FramingTransposer Component")]
+    [SerializeField]  private CinemachineFramingTransposer _cameraFollowSetting;
+    [Tooltip("Cinemachine POV Component")]
+    [SerializeField]  private CinemachinePOV _cameraLookAtSetting;
 
     [Header("Scroll setting")]
-    [SerializeField]
+    [Range(0f, 10f)]
     [Tooltip("Sensitivity of scroll")]
-    private float ScrollSensitivity = 100.0f;
-    [SerializeField]
-    [Tooltip("Min value of camera FOV")]
-    private float MinFOV = 20.0f;
-    [SerializeField]
-    [Tooltip("Max value of camera FOV")]
-    private float MaxFOV = 60.0f;
+    [SerializeField] private float _scrollSensitivity = 5.0f;
 
     [Header("Mouse setting")]
-    [SerializeField]
-    private float MouseSensitivity = 100.0f;
+    [Range(0.5f, 1.5f)]
+    [Tooltip("Sensitivity of mouse")]
+    [SerializeField] private float _mouseSensitivity = 1.0f;
 
     [Header("Default value")]
-    [SerializeField]
-    [Tooltip("Init distance between camera and player")]
-    private float _cameraDistance = 5.0f;
-    [SerializeField]
-    [Tooltip("Init value of camera FOV")]
-    private float _initFOV = 20.0f;
-    [SerializeField]
-    [Tooltip("Default value of EndPoint FOV")]
-    private float _defaultFOV = 40.0f;
+    [Tooltip("Value of camera distance")]
+    [SerializeField]  private float _cameraDistance = 5.0f;
+    [Tooltip("Value of camera fieldOfView")]
+    [SerializeField] private float _cameraFOV = 60.0f;
 
-    [Header("Debug value")]
-    [SerializeField]
-    [Tooltip("Camera vector from player")]
-    private Vector3 _endPointPosition = Vector3.zero;
-    [SerializeField]
-    [Tooltip("Camera Fov")]
-    public float _endPointFOV = 0.0f;
+    //Value of VirtualCamera clipPlane
+    private (float, float) _clipPlane = (0.1f, 500f);
 
-    private void Start()
-    {
-        _camera = gameObject.GetOrAddComponent<Camera>();
-        _focusObject = GetFocusObject(); ;
-        if (!_focusObject)
-        {
-            return;
-            //Todo
-        }
-        InitCameraPosition();
-    }
-    private void LateUpdate()
-    {
-        //줌인/줌아웃
-        ZoomInOut();
+    //Value of CinemachinePOV horizontal axis
+    private float _minMouseValueX = -180.0f;
+    private float _maxMouseValueX = 180.0f;
+    private float _sensitivityMouseX = 0.5f;
+    private (float, float) _accelDecelX = (0.8f, 0.25f);
 
-        //회전
-        RotatePlayer();
+    //Value of CinemachinePOV vertical axis
+    private float _minMouseValueY = -90.0f;
+    private float _maxMouseValueY = 90.0f;
+    private float _sensitivityMouseY = 0.3f;
+    private (float, float) _accelDecelY = (0.8f, 0.05f);
 
-        //카메라 트랜스폼 변경
-        _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, _endPointFOV, Time.deltaTime * 1.5f);
-        transform.position = _focusObject.position + _endPointPosition;
+    //Initialize Value of cameraPosition
+    private float _initDistance = 1.0f;
+    public (float, float) _initPosition = (180, 0);
 
-        //Todo : bug fix inverse coordinate
-        //transform.LookAt(_focusObject, _focusObject.up);
-    }
-
+    //Value of Min/Max camera distance
+    private float _minDistance = 1.0f;
+    private float _maxDistance = 10.0f;
+    
     #region Methods
     /// <summary>
     /// Player오브젝트의 FocusPoint오브젝트 Transform 반환 메서드
@@ -101,13 +82,38 @@ public class MainCameraController : MonoBehaviour
     /// <summary>
     /// 카메라 초기화 메서드
     /// </summary>
-    private void InitCameraPosition()
+    private void InitCameraSetting()
     {
-        Vector3 initPosition = _focusObject.position + -(_focusObject.forward) * (Mathf.Abs(_cameraDistance));
-        transform.position = initPosition;
-        _camera.fieldOfView = _initFOV;
-        _endPointPosition = transform.position - _focusObject.position;
-        _endPointFOV = _defaultFOV;
+        //CameraSetting
+        _camera.Follow = _focusObject;
+        _camera.LookAt = _focusObject;
+        _camera.m_Lens.FieldOfView = _cameraFOV;
+        _camera.m_Lens.NearClipPlane = _clipPlane.Item1;
+        _camera.m_Lens.FarClipPlane = _clipPlane.Item2;
+
+        //Camera Follow(Body) Setting
+        _cameraFollowSetting.m_CameraDistance = _initDistance;
+
+        //Camera LookAt(Aim) Setting
+        //Mouse_X
+        _cameraLookAtSetting.m_HorizontalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+        _cameraLookAtSetting.m_HorizontalAxis.m_MinValue = _minMouseValueX;
+        _cameraLookAtSetting.m_HorizontalAxis.m_MaxValue = _maxMouseValueX;
+        _cameraLookAtSetting.m_HorizontalAxis.m_MaxSpeed = _sensitivityMouseX * _mouseSensitivity;
+        _cameraLookAtSetting.m_HorizontalAxis.m_AccelTime = _accelDecelX.Item1;
+        _cameraLookAtSetting.m_HorizontalAxis.m_DecelTime = _accelDecelX.Item2;
+
+        //Mouse_Y
+        _cameraLookAtSetting.m_VerticalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+        _cameraLookAtSetting.m_VerticalAxis.m_MinValue = _minMouseValueY;
+        _cameraLookAtSetting.m_VerticalAxis.m_MaxValue = _maxMouseValueY;
+        _cameraLookAtSetting.m_VerticalAxis.m_MaxSpeed = _sensitivityMouseY * _mouseSensitivity;
+        _cameraLookAtSetting.m_VerticalAxis.m_AccelTime = _accelDecelY.Item1;
+        _cameraLookAtSetting.m_VerticalAxis.m_DecelTime = _accelDecelY.Item2;
+
+        //Init Position Setting
+        _cameraLookAtSetting.m_HorizontalAxis.Value = _initPosition.Item1;
+        _cameraLookAtSetting.m_VerticalAxis.Value = _initPosition.Item2;
     }
 
     /// <summary>
@@ -117,42 +123,39 @@ public class MainCameraController : MonoBehaviour
     {
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
         if (wheelInput == 0.0f)
-        {
             return;
-        }
-        float afterFOV = Mathf.Clamp(_camera.fieldOfView + -(wheelInput * ScrollSensitivity), MinFOV, MaxFOV);
-        _endPointFOV = afterFOV;
+        _cameraDistance = Mathf.Clamp(_cameraDistance + -(wheelInput * _scrollSensitivity), _minDistance, _maxDistance);
     }
     #endregion
 
-    float min = -90.0f;
-    float max = 90.0f;
-    public float value = 0.0f;
-
-    public void RotatePlayer()
+    private void Awake()
     {
-        Rotate_AxisX();
-        Rotate_AxisY();
+        _camera = gameObject.GetOrAddComponent<CinemachineVirtualCamera>();
+        _cameraFollowSetting = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        _cameraLookAtSetting = _camera.GetCinemachineComponent<CinemachinePOV>();
     }
 
-    public void Rotate_AxisX()
+    private void Start()
     {
-        float xMouseInput = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
-
-        Quaternion quaternion = Quaternion.AngleAxis(xMouseInput, _focusObject.transform.up);
-        Vector3 vector2 = quaternion * _endPointPosition;
-        _endPointPosition = vector2;
-    }
-
-    public void Rotate_AxisY()
-    {
-        float yMouseInput = Input.GetAxis("Mouse Y") * MouseSensitivity * 0.5f * Time.deltaTime;
-        float angleValue = Mathf.Clamp(value + -yMouseInput, min, max);
-        if (angleValue <= min || angleValue >= max)
+        _focusObject = GetFocusObject();
+        if (!_focusObject)
+        {
+            //TODO
             return;
-        Quaternion quaternion1 = Quaternion.AngleAxis(-yMouseInput, transform.right);
-        Vector3 afterY = quaternion1 * _endPointPosition;
-        value += -yMouseInput;
-        _endPointPosition = afterY;
+        }
+        InitCameraSetting();
     }
+    private void LateUpdate()
+    {
+        //ZoomIn/ZoomOut
+        ZoomInOut();
+        if (_cameraFollowSetting.m_CameraDistance == _cameraDistance)
+        {
+            Debug.Log("skip");
+            return;
+        }
+        _cameraFollowSetting.m_CameraDistance = Mathf.Lerp(_cameraFollowSetting.m_CameraDistance, _cameraDistance, Time.deltaTime);
+    }
+
+    
 }

@@ -1,4 +1,5 @@
 using Cinemachine;
+using OpenCover.Framework.Model;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class MainCameraController : MonoBehaviour
     [SerializeField]  private CinemachinePOV _cameraLookAtSetting;
 
     [Header("Scroll setting")]
-    [Range(0f, 10f)]
+    [Range(1f, 10f)]
     [Tooltip("Sensitivity of scroll")]
     [SerializeField] private float _scrollSensitivity = 5.0f;
 
@@ -48,7 +49,7 @@ public class MainCameraController : MonoBehaviour
 
     //Initialize Value of cameraPosition
     private float _initDistance = 1.0f;
-    public (float, float) _initPosition = (180, 0);
+    public (float, float) _initPosition = (0, 0);
 
     //Value of Min/Max camera distance
     private float _minDistance = 1.0f;
@@ -71,8 +72,8 @@ public class MainCameraController : MonoBehaviour
             if (player.TryGetComponent<CapsuleCollider>(out collider))
             {
                 focusPoint = new GameObject(UtilityName.FocusPoint).transform;
-                focusPoint.position = new Vector3(collider.bounds.center.x, collider.bounds.max.y, collider.bounds.center.z);
                 focusPoint.SetParent(player.transform);
+                focusPoint.localPosition = Vector3.up * collider.height;
                 focusPoint.localRotation = Quaternion.identity;
             }
         }
@@ -140,7 +141,7 @@ public class MainCameraController : MonoBehaviour
         _focusObject = GetFocusObject();
         if (!_focusObject)
         {
-            //TODO
+            //Exception Handling
             return;
         }
         InitCameraSetting();
@@ -149,11 +150,8 @@ public class MainCameraController : MonoBehaviour
     {
         //ZoomIn/ZoomOut
         ZoomInOut();
-        if (_cameraFollowSetting.m_CameraDistance == _cameraDistance)
-        {
-            Debug.Log("skip");
+        if (Mathf.Round(_cameraFollowSetting.m_CameraDistance * 10) / 10 == Mathf.Round(_cameraDistance * 10) / 10)
             return;
-        }
         _cameraFollowSetting.m_CameraDistance = Mathf.Lerp(_cameraFollowSetting.m_CameraDistance, _cameraDistance, Time.deltaTime);
     }
 

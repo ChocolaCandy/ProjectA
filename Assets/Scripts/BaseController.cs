@@ -1,5 +1,5 @@
 using UnityEngine;
 
-public class BaseController : MonoBehaviour
+public abstract class BaseController : MonoBehaviour
 { 
 }

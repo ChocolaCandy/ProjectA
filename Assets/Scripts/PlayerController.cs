@@ -3,26 +3,37 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent (typeof (PlayerInput))]
 public class PlayerController : BaseController
 {
     private Camera _mainCamera;
     public float rotation = 50;
     public PlayerStateMachine _playerStateMachine;
-
+    public PlayerInput Input { get; private set; }
     private void Awake()
     {
         _playerStateMachine = new PlayerStateMachine(this);
+        Input = GetComponent<PlayerInput>();
     }
 
     private void Start()
     {
-        _playerStateMachine.Init(_playerStateMachine.IDLE);
+        _playerStateMachine.Init(_playerStateMachine.Idle);
     }
 
     private void Update()
     {
         _playerStateMachine.OnUpdate();
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        _playerStateMachine.OnTriggerEnter(other);
+    }
+
+
+
+
+
 
     //private void Awake()
     //{

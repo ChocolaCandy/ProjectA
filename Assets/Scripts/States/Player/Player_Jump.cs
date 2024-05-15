@@ -8,17 +8,17 @@ public class Player_Jump : PlayerStates
 
     public override void OnEnter()
     {
-        base.OnEnter();
-        isJumping = true;
-        Jump();
+        //base.OnEnter();
+        //isJumping = true;
+        //Jump();
     }
     public override void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isJumping = false;
-            PlayerStateMachine.OnChangeState(PlayerStateMachine.Idle);
-        }
+        //if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        //{
+        //    isJumping = false;
+        //    PlayerStateMachine.OnChangeState(PlayerStateMachine.Idle);
+        //}
     }
 
     private void Jump()

@@ -5,7 +5,7 @@ using UnityEngine;
 public static class Utility
 {
     #region Fields
-    public static bool IsDebugMode = true;
+    public static bool IsDebugMode = false;
     #endregion
 
     #region NonExtension Methods

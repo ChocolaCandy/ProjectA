@@ -13,17 +13,14 @@ public class Player_Idle : PlayerStates
     public override void OnUpdate()
     {
         base.OnUpdate();
-        if (MovementInput == Vector2.zero)
-            return;
-        ChangeWalk();
     }
 
     public override void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isJumping = false;
-        }
+        //if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        //{
+        //    isJumping = false;
+        //}
     }
 
     private void ChangeWalk()

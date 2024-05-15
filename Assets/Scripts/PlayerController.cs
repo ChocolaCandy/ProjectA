@@ -6,14 +6,15 @@ using UnityEngine;
 [RequireComponent (typeof (PlayerInput))]
 public class PlayerController : BaseController
 {
-    private Camera _mainCamera;
-    public float rotation = 50;
+    public Camera PlayerCamera;
+    //public float rotation = 50;
     public PlayerStateMachine _playerStateMachine;
     public PlayerInput Input { get; private set; }
     private void Awake()
     {
         _playerStateMachine = new PlayerStateMachine(this);
         Input = GetComponent<PlayerInput>();
+        PlayerCamera = Camera.main;
     }
 
     private void Start()
@@ -25,11 +26,14 @@ public class PlayerController : BaseController
     {
         _playerStateMachine.OnUpdate();
     }
+    private void FixedUpdate()
+    {
+        _playerStateMachine.OnPhysicsUpdate();
+    }
     private void OnTriggerEnter(Collider other)
     {
         _playerStateMachine.OnTriggerEnter(other);
     }
-
 
 
 

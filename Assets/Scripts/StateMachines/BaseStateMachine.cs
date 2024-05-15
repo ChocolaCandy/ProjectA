@@ -62,6 +62,7 @@ public abstract class BaseStateMachine<T> where T : BaseController
         _currentState.OnEnter();
         return true;
     }
+
     public virtual void OnTriggerEnter(Collider other)
     {
         _currentState?.OnTriggerEnter(other);

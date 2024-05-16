@@ -9,10 +9,14 @@ public class Player_Idle : PlayerStates
     public override void OnEnter()
     {
         base.OnEnter();
+        PlayerStateMachine.Controller.PlayerRigidbody.velocity = Vector3.zero;
     }
     public override void OnUpdate()
     {
         base.OnUpdate();
+        if (PlayerMoveInput == Vector2.zero)
+            return;
+        ChangeWalk();
     }
 
     public override void OnTriggerEnter(Collider other)

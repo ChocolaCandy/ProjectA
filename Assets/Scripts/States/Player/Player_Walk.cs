@@ -12,8 +12,14 @@ public class Player_Walk : PlayerStates
     public override void OnUpdate()
     {
         base.OnUpdate();
-        if (MovementInput == Vector2.zero)
+        if (PlayerMoveInput == Vector2.zero)
             ChangeIdle();
+    }
+
+    public override void OnPhysicsUpdate()
+    {
+        base.OnPhysicsUpdate();
+        Move();
     }
 
     private void ChangeIdle()

@@ -7,14 +7,18 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
     public Camera PlayerCamera;
+
+    public Rigidbody PlayerRigidbody;
+
     //public float rotation = 50;
     public PlayerStateMachine _playerStateMachine;
     public PlayerInput Input { get; private set; }
     private void Awake()
     {
+        PlayerCamera = Camera.main;
+        PlayerRigidbody = GetComponent<Rigidbody>();
         _playerStateMachine = new PlayerStateMachine(this);
         Input = GetComponent<PlayerInput>();
-        PlayerCamera = Camera.main;
     }
 
     private void Start()

@@ -9,6 +9,7 @@ public class Player_Idle : PlayerStates
         base.OnEnter();
         PlayerStateMachine.Controller.PlayerRigidbody.velocity = Vector3.zero;
     }
+
     public override void OnUpdate()
     {
         base.OnUpdate();
@@ -16,8 +17,19 @@ public class Player_Idle : PlayerStates
             ChangeWalk();
     }
 
-    private void ChangeWalk()
+    public override void OnPhysicsUpdate()
     {
-        PlayerStateMachine.OnChangeState(PlayerStateMachine.Walk);
+
+    }
+
+
+    public override void OnExit()
+    {
+        base.OnExit();
+    }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        
     }
 }

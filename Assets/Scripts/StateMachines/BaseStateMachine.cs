@@ -7,8 +7,8 @@ public abstract class BaseStateMachine<T> where T : BaseController
         Controller = controller;
     }
     public T Controller { get; }
-    private BaseState _currentState;
-    private BaseState _pastState;
+    public BaseState _currentState;
+    public BaseState _pastState;
     private bool _isInit = false; 
 
     public virtual void Init(BaseState initState)
@@ -35,6 +35,7 @@ public abstract class BaseStateMachine<T> where T : BaseController
             return;
         }
         _currentState.OnUpdate();
+        Debug.Log(_currentState);
     }
 
     public virtual void OnPhysicsUpdate()

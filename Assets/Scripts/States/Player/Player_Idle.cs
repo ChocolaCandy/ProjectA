@@ -6,8 +6,9 @@ public class Player_Idle : PlayerStates
 
     public override void OnEnter()
     {
+        isReadyToJump = true;
         base.OnEnter();
-        PlayerStateMachine.Controller.PlayerRigidbody.velocity = Vector3.zero;
+        _playerController.PlayerRigidbody.velocity = Vector3.zero;
     }
 
     public override void OnUpdate()
@@ -22,9 +23,9 @@ public class Player_Idle : PlayerStates
 
     }
 
-
     public override void OnExit()
     {
+        isReadyToJump = false;
         base.OnExit();
     }
 

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player_Walk : PlayerStates
@@ -7,7 +8,7 @@ public class Player_Walk : PlayerStates
     #region Private Fields
     //Player movement value
     private float _moveSpeed = 5.0f;
-    private float _rotateTime = 0.05f;
+    private float _rotateTime = 0.13f;
     private float _rotateAngle = 0.0f;
 
     //Check input vector
@@ -21,6 +22,7 @@ public class Player_Walk : PlayerStates
 
     public override void OnEnter()
     {
+        isReadyToJump = true;
         base.OnEnter();
     }
 
@@ -98,7 +100,7 @@ public class Player_Walk : PlayerStates
     {
         float rotateAngle = Mathf.Atan2(inputDirectionVector.x, inputDirectionVector.z) * Mathf.Rad2Deg;
         if (rotateAngle < 0) rotateAngle += 360;
-        rotateAngle += PlayerStateMachine.Controller.PlayerCamera.transform.eulerAngles.y;
+        rotateAngle += _playerController.PlayerCamera.transform.eulerAngles.y;
         if (rotateAngle > 360) rotateAngle -= 360;
         if (_rotateAngle == rotateAngle)
             return;
@@ -111,12 +113,12 @@ public class Player_Walk : PlayerStates
     /// </summary>
     private void RotatePlayer()
     {
-        if (PlayerStateMachine.Controller.PlayerRigidbody.transform.eulerAngles.y == _rotateAngle)
+        if (Mathf.Round(_playerController.PlayerRigidbody.transform.eulerAngles.y) == Mathf.Round(_rotateAngle))
             return;
-        float currentAngle = PlayerStateMachine.Controller.PlayerRigidbody.transform.eulerAngles.y;
+        float currentAngle = _playerController.PlayerRigidbody.transform.eulerAngles.y;
         float smoothAngle = Mathf.SmoothDampAngle(currentAngle, _rotateAngle, ref _currentVelocity, _rotateTime - _elapsedTime);
         _elapsedTime += Time.fixedDeltaTime;
-        PlayerStateMachine.Controller.PlayerRigidbody.MoveRotation(Quaternion.Euler(0.0f, smoothAngle, 0.0f));
+        _playerController.PlayerRigidbody.MoveRotation(Quaternion.Euler(0.0f, smoothAngle, 0.0f));
     }
 
     /// <summary>
@@ -125,9 +127,9 @@ public class Player_Walk : PlayerStates
     private void MovePlayer()
     {
         Vector3 rotateFowardVector = RotateFowardVector(_rotateAngle);
-        Vector3 _currentVelocity = PlayerStateMachine.Controller.PlayerRigidbody.velocity;
+        Vector3 _currentVelocity = _playerController.PlayerRigidbody.velocity;
         _currentVelocity.y = 0f;
-        PlayerStateMachine.Controller.PlayerRigidbody.AddForce(rotateFowardVector * _moveSpeed - _currentVelocity, ForceMode.VelocityChange);
+        _playerController.PlayerRigidbody.AddForce(rotateFowardVector * _moveSpeed - _currentVelocity, ForceMode.VelocityChange);
     }
 
     /// <summary>

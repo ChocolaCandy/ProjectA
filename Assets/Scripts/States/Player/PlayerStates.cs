@@ -6,21 +6,23 @@ public class PlayerStates : BaseState
     public PlayerStates(PlayerStateMachine stateMachine)
     {
         PlayerStateMachine = stateMachine;
+        _playerController = PlayerStateMachine.Controller;
     }
 
     #region Protected Fields
     //PlayerStateMachine
     protected PlayerStateMachine PlayerStateMachine { get; }
-
+    //PlayerController
+    protected PlayerController _playerController;
     //InputAction player move value
     protected Vector2 PlayerMoveInput { get; private set; }
     #endregion
 
-    //public bool isJumping { get; protected set; }
+    public bool isReadyToJump { get; protected set; } = false;
+
     public override void OnEnter()
     {
-        PlayerStateMachine.Controller.Input.Actions.Jump.started += ChangeJump;
-        if (Utility.IsDebugMode) Debug.Log($"{GetType().Name} Enter");
+        _playerController.Input.Actions.Jump.started += ChangeJump;
     }
 
     public override void OnUpdate()
@@ -35,8 +37,7 @@ public class PlayerStates : BaseState
 
     public override void OnExit()
     {
-        PlayerStateMachine.Controller.Input.Actions.Jump.started -= ChangeJump;
-        if (Utility.IsDebugMode) Debug.Log($"{GetType().Name} Exit");
+        _playerController.Input.Actions.Jump.started -= ChangeJump;
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -50,7 +51,7 @@ public class PlayerStates : BaseState
     /// </summary>
     private void GetMoveInput()
     {
-        PlayerMoveInput = PlayerStateMachine.Controller.Input.Actions.Move.ReadValue<Vector2>();
+        PlayerMoveInput = _playerController.Input.Actions.Move.ReadValue<Vector2>();
     }
     #endregion
 
@@ -66,7 +67,8 @@ public class PlayerStates : BaseState
 
     protected void ChangeJump(InputAction.CallbackContext context)
     {
-        PlayerStateMachine.OnChangeState(PlayerStateMachine.Jump);
+        if(isReadyToJump)
+            PlayerStateMachine.OnChangeState(PlayerStateMachine.Jump);
     }
 
     protected void ChangePastState()

@@ -3,16 +3,34 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
+    public Rigidbody body;
     private void Start()
     {
-      
+      body = GetComponent<Rigidbody>();
     }
-    float targetRotation = 10f;
-    float velocity;
-    float smooth = 0.3f;
     private void Update()
     {
-        transform.eulerAngles = Vector3.forward * Mathf.SmoothDampAngle(transform.eulerAngles.z, targetRotation,
-                                    ref velocity,smooth);
+        if (Input.GetKey(KeyCode.W))
+        {
+            body.AddForce(transform.forward * 2.0f);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            body.AddForce(-transform.right * 2.0f);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            body.AddForce(-transform.forward * 2.0f);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            body.AddForce(transform.right * 2.0f);
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            body.AddForce(transform.up * 5.0f, ForceMode.VelocityChange);
+        }
     }
+
+
 }

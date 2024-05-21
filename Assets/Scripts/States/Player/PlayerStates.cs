@@ -6,7 +6,7 @@ public class PlayerStates : BaseState
     public PlayerStates(PlayerStateMachine stateMachine)
     {
         PlayerStateMachine = stateMachine;
-        _playerController = PlayerStateMachine.Controller;
+       // _playerController = PlayerStateMachine.Controller;
     }
 
     #region Protected Fields
@@ -22,7 +22,7 @@ public class PlayerStates : BaseState
 
     public override void OnEnter()
     {
-        _playerController.Input.Actions.Jump.started += ChangeJump;
+      //  _playerController.Input.Actions.Jump.started += ChangeJump;
     }
 
     public override void OnUpdate()
@@ -37,7 +37,7 @@ public class PlayerStates : BaseState
 
     public override void OnExit()
     {
-        _playerController.Input.Actions.Jump.started -= ChangeJump;
+      //  _playerController.Input.Actions.Jump.started -= ChangeJump;
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -51,7 +51,7 @@ public class PlayerStates : BaseState
     /// </summary>
     private void GetMoveInput()
     {
-        PlayerMoveInput = _playerController.Input.Actions.Move.ReadValue<Vector2>();
+       // PlayerMoveInput = _playerController.Input.Actions.Move.ReadValue<Vector2>();
     }
     #endregion
 

@@ -1,10 +1,16 @@
 using Cinemachine;
+using System;
+using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using static Cinemachine.CinemachineCollider;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
-public class MainCameraController : MonoBehaviour
+[RequireComponent(typeof(CinemachineCollider))]
+public class TownCameraController : MonoBehaviour
 {
     #region SerializeFields
+    //Costomizeable setting values
     [Header("Component")]
     [Tooltip("Transform to focus")]
     [SerializeField] private Transform _focusObject;
@@ -14,6 +20,8 @@ public class MainCameraController : MonoBehaviour
     [SerializeField] private CinemachineFramingTransposer _cameraFollowSetting;
     [Tooltip("Cinemachine POV Component")]
     [SerializeField] private CinemachinePOV _cameraLookAtSetting;
+    [Tooltip("Cinemachine Collider Component")]
+    [SerializeField] private CinemachineCollider _cameraCollider;
 
     [Header("Mouse setting")]
     [Range(0.5f, 1.5f)]
@@ -24,6 +32,10 @@ public class MainCameraController : MonoBehaviour
     [Range(1f, 10f)]
     [Tooltip("Sensitivity of scroll")]
     [SerializeField] private float _scrollSensitivity = 5.0f;
+
+    [Header("Collider setting")]
+    [SerializeField] private LayerMask _collideAgainst;
+    [SerializeField] private LayerMask _transparentLayers;
 
     [Header("Camera value")]
     [Tooltip("Value of camera distance")]
@@ -36,6 +48,12 @@ public class MainCameraController : MonoBehaviour
     //Value of VirtualCamera clipPlane
     private (float, float) _clipPlane = (0.1f, 500f);
 
+    //Value of FramingTransposer DeadZone
+    private float DeadZoneWidth = 0.0f;
+    private float DeadZoneHeight = 0.0f;
+    private float SoftDeadZoneWidth = 0.8f;
+    private float SoftDeadZoneHeight = 0.8f;
+
     //Value of CinemachinePOV horizontal axis
     private float _minMouseValueX = -180.0f;
     private float _maxMouseValueX = 180.0f;
@@ -43,10 +61,17 @@ public class MainCameraController : MonoBehaviour
     private (float, float) _accelDecelX = (0.8f, 0.25f);
 
     //Value of CinemachinePOV vertical axis
-    private float _minMouseValueY = -90.0f;
+    private float _minMouseValueY = -70.0f;
     private float _maxMouseValueY = 90.0f;
     private float _sensitivityMouseY = 0.3f;
     private (float, float) _accelDecelY = (0.8f, 0.05f);
+
+    //Value of CinemachineCollider
+    private string _ignoreTag = "Player";
+    private ResolutionStrategy _strategy = ResolutionStrategy.PullCameraForward;
+    private float _smoothingTime = 0.0f;
+    private float _damping = 0.0f;
+    private float _dampingWhenOccluded = 0.0f;
 
     //Initialize Value of cameraPosition
     private float _initDistance = 1.0f;
@@ -55,6 +80,7 @@ public class MainCameraController : MonoBehaviour
     //Value of Min/Max camera distance
     private float _minDistance = 1.0f;
     private float _maxDistance = 10.0f;
+
     #endregion
 
     #region Methods
@@ -101,6 +127,7 @@ public class MainCameraController : MonoBehaviour
         LensSetting();
         FollowingSetting();
         LookAtSetting();
+        ColliderSetting();  
     }
 
     /// <summary>
@@ -128,6 +155,10 @@ public class MainCameraController : MonoBehaviour
     private void FollowingSetting()
     {
         _cameraFollowSetting.m_CameraDistance = _initDistance;
+        _cameraFollowSetting.m_DeadZoneWidth = DeadZoneWidth;
+        _cameraFollowSetting.m_DeadZoneHeight = DeadZoneHeight;
+        _cameraFollowSetting.m_SoftZoneWidth = SoftDeadZoneWidth;
+        _cameraFollowSetting.m_SoftZoneHeight = SoftDeadZoneHeight;
     }
 
     /// <summary>
@@ -144,14 +175,13 @@ public class MainCameraController : MonoBehaviour
     /// </summary>
     private void CameraAxisX()
     {
-        AxisState x = _cameraLookAtSetting.m_HorizontalAxis;
-        x.Value = _initPosition.Item1;
-        x.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
-        x.m_MinValue = _minMouseValueX;
-        x.m_MaxValue = _maxMouseValueX;
-        x.m_MaxSpeed = _sensitivityMouseX * _mouseSensitivity;
-        x.m_AccelTime = _accelDecelX.Item1;
-        x.m_DecelTime = _accelDecelX.Item2;
+        _cameraLookAtSetting.m_HorizontalAxis.Value = _initPosition.Item1;
+        _cameraLookAtSetting.m_HorizontalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+        _cameraLookAtSetting.m_HorizontalAxis.m_MinValue = _minMouseValueX;
+        _cameraLookAtSetting.m_HorizontalAxis.m_MaxValue = _maxMouseValueX;
+        _cameraLookAtSetting.m_HorizontalAxis.m_MaxSpeed = _sensitivityMouseX * _mouseSensitivity;
+        _cameraLookAtSetting.m_HorizontalAxis.m_AccelTime = _accelDecelX.Item1;
+        _cameraLookAtSetting.m_HorizontalAxis.m_DecelTime = _accelDecelX.Item2;
     }
 
     /// <summary>
@@ -159,14 +189,27 @@ public class MainCameraController : MonoBehaviour
     /// </summary>
     private void CameraAxisY()
     {
-        AxisState y = _cameraLookAtSetting.m_VerticalAxis;
-        y.Value = _initPosition.Item2;
-        y.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
-        y.m_MinValue = _minMouseValueY;
-        y.m_MaxValue = _maxMouseValueY;
-        y.m_MaxSpeed = _sensitivityMouseY * _mouseSensitivity;
-        y.m_AccelTime = _accelDecelY.Item1;
-        y.m_DecelTime = _accelDecelY.Item2;
+        _cameraLookAtSetting.m_VerticalAxis.Value = _initPosition.Item2;
+        _cameraLookAtSetting.m_VerticalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+        _cameraLookAtSetting.m_VerticalAxis.m_MinValue = _minMouseValueY;
+        _cameraLookAtSetting.m_VerticalAxis.m_MaxValue = _maxMouseValueY;
+        _cameraLookAtSetting.m_VerticalAxis.m_MaxSpeed = _sensitivityMouseY * _mouseSensitivity;
+        _cameraLookAtSetting.m_VerticalAxis.m_AccelTime = _accelDecelY.Item1;
+        _cameraLookAtSetting.m_VerticalAxis.m_DecelTime = _accelDecelY.Item2;
+    }
+
+    /// <summary>
+    /// Cinemachine Collider 세팅 메서드
+    /// </summary>
+    private void ColliderSetting()
+    {
+        _cameraCollider.m_CollideAgainst = _collideAgainst;
+        _cameraCollider.m_IgnoreTag = _ignoreTag;
+        _cameraCollider.m_TransparentLayers = _transparentLayers;
+        _cameraCollider.m_Strategy = _strategy;
+        _cameraCollider.m_SmoothingTime = _smoothingTime;
+        _cameraCollider.m_Damping = _damping;
+        _cameraCollider.m_DampingWhenOccluded = _dampingWhenOccluded;
     }
 
     /// <summary>
@@ -177,7 +220,18 @@ public class MainCameraController : MonoBehaviour
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
         if (wheelInput == 0.0f)
             return;
+        //if (CheckCollision())
+        //{
+        //    _cameraDistance = (_focusObject.transform.position - Camera.main.transform.position).magnitude;
+        //}
         _cameraDistance = Mathf.Clamp(_cameraDistance + -(wheelInput * _scrollSensitivity), _minDistance, _maxDistance);
+    }
+
+    private bool CheckCollision()
+    {
+        if (_camera.transform.position != Camera.main.transform.position)
+            return true;
+        return false;
     }
 
     /// <summary>
@@ -185,6 +239,11 @@ public class MainCameraController : MonoBehaviour
     /// </summary>
     private void Zoom()
     {
+        //if (CheckCollision())
+        //{
+        //    _cameraFollowSetting.m_CameraDistance = (_focusObject.transform.position - Camera.main.transform.position).magnitude - 0.1f;
+        //    return;
+        //}
         if (Mathf.Round(_cameraFollowSetting.m_CameraDistance * 10) / 10 == Mathf.Round(_cameraDistance * 10) / 10)
             return;
         _cameraFollowSetting.m_CameraDistance = Mathf.Lerp(_cameraFollowSetting.m_CameraDistance, _cameraDistance, Time.deltaTime);
@@ -196,6 +255,7 @@ public class MainCameraController : MonoBehaviour
         _camera = gameObject.GetComponent<CinemachineVirtualCamera>();
         _cameraFollowSetting = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
         _cameraLookAtSetting = _camera.GetCinemachineComponent<CinemachinePOV>();
+        _cameraCollider = GetComponent<CinemachineCollider>();
     }
 
     private void Start()

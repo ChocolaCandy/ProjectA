@@ -1,8 +1,7 @@
 
-
-public class PlayerStateMachine : BaseStateMachine<PlayerController>
+public class PlayerStateMachine : BaseStateMachine
 {
-    public PlayerStateMachine(PlayerController controller) : base(controller)
+    public PlayerStateMachine(PlayerController controller)
     { 
         Idle = new Player_Idle(this);
         Walk = new Player_Walk(this);

@@ -1,12 +1,7 @@
 using UnityEngine;
 
-public abstract class BaseStateMachine<T> where T : BaseController
+public class BaseStateMachine
 {
-    protected BaseStateMachine(T controller)
-    {
-        Controller = controller;
-    }
-    public T Controller { get; }
     public BaseState _currentState;
     public BaseState _pastState;
     private bool _isInit = false; 
@@ -35,7 +30,7 @@ public abstract class BaseStateMachine<T> where T : BaseController
             return;
         }
         _currentState.OnUpdate();
-        Debug.Log(_currentState);
+        //Debug.Log(_currentState);
     }
 
     public virtual void OnPhysicsUpdate()

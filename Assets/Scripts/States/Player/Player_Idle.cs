@@ -8,7 +8,7 @@ public class Player_Idle : PlayerStates
     {
         isReadyToJump = true;
         base.OnEnter();
-        _playerController.PlayerRigidbody.velocity = Vector3.zero;
+        //_playerController.PlayerRigidbody.velocity = Vector3.zero;
     }
 
     public override void OnUpdate()

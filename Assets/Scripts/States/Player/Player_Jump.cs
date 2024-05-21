@@ -42,7 +42,7 @@ public class Player_Jump : PlayerStates
         if (PlayerMoveInput != Vector2.zero)
             Rotate();
         _playerController.PlayerRigidbody.velocity = Vector3.zero;
-        PlayerStateMachine.Controller.PlayerRigidbody.AddForce(_playerController.transform.up * _jumpForce, ForceMode.VelocityChange);
+        //PlayerStateMachine.Controller.PlayerRigidbody.AddForce(_playerController.transform.up * _jumpForce, ForceMode.VelocityChange);
         jumpCount--;
     }
     private void Rotate()

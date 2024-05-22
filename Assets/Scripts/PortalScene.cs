@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PortalScene : MonoBehaviour
 {
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.Backspace))
+            SceneManager.LoadScene("Test_Title");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

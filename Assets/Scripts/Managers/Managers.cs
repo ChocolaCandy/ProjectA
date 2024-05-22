@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,8 +20,7 @@ public class Managers : MonoBehaviour
     #endregion
 
     #region Managers Properties
-    //Todo 외부에서 접근을 허용할 것인가?
-    public static Managers Manager
+    private static Managers Manager
     {
         get
         {
@@ -53,8 +47,8 @@ public class Managers : MonoBehaviour
                 manager = new GameObject($"{UtilityName.Manager}");
                 manager.tag = "Manager";
             }
-            manager.AutoGetComponent<Managers>();
-            _manager = manager.GetComponent<Managers>();
+            Managers managers = manager.GetOrAddComponent<Managers>();
+            _manager = managers;
             _manager.ManagerID = manager.GetInstanceID();
             _manager._inputManager = new InputManager(_manager.ManagerID);
             _manager._dataManager = new DataManager(_manager.ManagerID);
@@ -65,18 +59,34 @@ public class Managers : MonoBehaviour
                 DontDestroyOnLoad(manager);
                 DontDestroyOnLoaded = true;
             }
+            _manager._inputManager.Init();
         }
     }
     #endregion
 
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void OnEnable()
+    {
+        Managers.InputManager.InputActionEnable();
+    }
+
     void Start()
     {
-        //Init();
+
     }
 
     private void Update()
     {
-        InputManager.CheckKeyBoard();
+
+    }
+
+    private void OnDisable()
+    {
+        Managers.InputManager.InputActionDisable();
     }
 
 }

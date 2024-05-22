@@ -1,10 +1,10 @@
 using UnityEngine;
 
-[RequireComponent (typeof(PlayerInput))]
+//[RequireComponent (typeof(Input))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : BaseController
 {
-    public PlayerInput Input { get; private set; }
+    public Input PlayerInput { get; private set; }
     public GameObject PlayerCamera { get; private set; }
     public Rigidbody PlayerRigidbody { get; private set; }
 
@@ -14,10 +14,11 @@ public class PlayerController : BaseController
 
     protected override void RunAwake()
     {
-        Input = GetComponent<PlayerInput>();
+       // PlayerInput = GetComponent<Input>();
         PlayerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
         PlayerRigidbody = GetComponent<Rigidbody>();
         PlayerStateMachine = new PlayerStateMachine(this);
+        DontDestroyOnLoad(gameObject);
         Init();
     }
 

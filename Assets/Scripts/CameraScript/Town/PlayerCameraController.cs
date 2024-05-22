@@ -1,13 +1,11 @@
 using Cinemachine;
 using System;
-using TMPro;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using static Cinemachine.CinemachineCollider;
+using UnityEngine.InputSystem.Controls;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 [RequireComponent(typeof(CinemachineCollider))]
-public class TownCameraController : MonoBehaviour
+public class PlayerCameraController : MonoBehaviour
 {
     #region SerializeFields
     //Costomizeable setting values
@@ -16,10 +14,6 @@ public class TownCameraController : MonoBehaviour
     [SerializeField] private Transform _focusObject;
     [Tooltip("Cinemachine VirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _camera;
-    [Tooltip("Cinemachine FramingTransposer Component")]
-    [SerializeField] private CinemachineFramingTransposer _cameraFollowSetting;
-    [Tooltip("Cinemachine POV Component")]
-    [SerializeField] private CinemachinePOV _cameraLookAtSetting;
     [Tooltip("Cinemachine Collider Component")]
     [SerializeField] private CinemachineCollider _cameraCollider;
 
@@ -29,9 +23,12 @@ public class TownCameraController : MonoBehaviour
     [SerializeField] private float _mouseSensitivity = 1.0f;
 
     [Header("Scroll setting")]
-    [Range(1f, 10f)]
+    [Range(1.0f, 10.0f)]
     [Tooltip("Sensitivity of scroll")]
     [SerializeField] private float _scrollSensitivity = 5.0f;
+    [Range(1.0f, 2.0f)]
+    [SerializeField] private float _zoomSpeed = 1.5f;
+
 
     [Header("Collider setting")]
     [SerializeField] private LayerMask _collideAgainst;
@@ -45,6 +42,11 @@ public class TownCameraController : MonoBehaviour
     #endregion
 
     #region Non-SerializeFields
+    //Cinemachine Body Component
+    private CinemachineFramingTransposer _cameraFollowSetting;
+    //Cinemachine Aim Component
+    private CinemachinePOV _cameraLookAtSetting;
+
     //Value of VirtualCamera clipPlane
     private (float, float) _clipPlane = (0.1f, 500f);
 
@@ -57,21 +59,26 @@ public class TownCameraController : MonoBehaviour
     //Value of CinemachinePOV horizontal axis
     private float _minMouseValueX = -180.0f;
     private float _maxMouseValueX = 180.0f;
-    private float _sensitivityMouseX = 0.5f;
+    private float _sensitivityMouseX = 0.05f;
     private (float, float) _accelDecelX = (0.8f, 0.25f);
 
     //Value of CinemachinePOV vertical axis
     private float _minMouseValueY = -70.0f;
     private float _maxMouseValueY = 90.0f;
-    private float _sensitivityMouseY = 0.3f;
+    private float _sensitivityMouseY = 0.03f;
     private (float, float) _accelDecelY = (0.8f, 0.05f);
 
     //Value of CinemachineCollider
     private string _ignoreTag = "Player";
-    private ResolutionStrategy _strategy = ResolutionStrategy.PullCameraForward;
+    private CinemachineCollider.ResolutionStrategy _strategy = CinemachineCollider.ResolutionStrategy.PullCameraForward;
     private float _smoothingTime = 0.0f;
-    private float _damping = 0.0f;
+    private float _damping = 1.0f;
     private float _dampingWhenOccluded = 0.0f;
+
+    //Collide ZoomIn Value
+    private bool _collideState = false;
+    private bool _isCollideZoom = false;
+    private float _distanceSpeed = 1.0f;
 
     //Initialize Value of cameraPosition
     private float _initDistance = 1.0f;
@@ -213,25 +220,45 @@ public class TownCameraController : MonoBehaviour
     }
 
     /// <summary>
-    /// 줌인/줌아웃 메서드
+    /// 카메라 충돌 체크
     /// </summary>
-    private void ZoomInOut()
-    {
-        float wheelInput = Input.GetAxis("Mouse ScrollWheel");
-        if (wheelInput == 0.0f)
-            return;
-        //if (CheckCollision())
-        //{
-        //    _cameraDistance = (_focusObject.transform.position - Camera.main.transform.position).magnitude;
-        //}
-        _cameraDistance = Mathf.Clamp(_cameraDistance + -(wheelInput * _scrollSensitivity), _minDistance, _maxDistance);
-    }
-
+    /// <returns></returns>
     private bool CheckCollision()
     {
         if (_camera.transform.position != Camera.main.transform.position)
             return true;
+        ResetCollideZoomInValue();
         return false;
+    }
+
+    /// <summary>
+    /// 콜라이더 줌인 변수 초기화 메서드
+    /// </summary>
+    private void ResetCollideZoomInValue()
+    {
+        _isCollideZoom = false;
+        _distanceSpeed = 1.0f;
+        _cameraCollider.m_Damping = _damping;
+    }
+
+    /// <summary>
+    /// 줌인/줌아웃 메서드
+    /// </summary>
+    private void ZoomInOut()
+    {
+        Vector2 inputValue = Managers.InputManager.CameraInput.Zoom.ReadValue<Vector2>().normalized;
+        float wheelInput = inputValue.y * 0.1f;
+        if (wheelInput == 0.0f || (_collideState && wheelInput < 0.0f))
+            return;
+        if (_collideState && !_isCollideZoom)
+        {
+            _isCollideZoom = true;
+            _distanceSpeed = Vector3.Distance(Camera.main.transform.position, _camera.transform.position);
+            _cameraCollider.m_Damping = 0.0f;
+            _cameraDistance -= _distanceSpeed;
+        }
+
+        _cameraDistance = Mathf.Clamp(_cameraDistance + -(wheelInput * _scrollSensitivity), _minDistance, _maxDistance);
     }
 
     /// <summary>
@@ -239,23 +266,20 @@ public class TownCameraController : MonoBehaviour
     /// </summary>
     private void Zoom()
     {
-        //if (CheckCollision())
-        //{
-        //    _cameraFollowSetting.m_CameraDistance = (_focusObject.transform.position - Camera.main.transform.position).magnitude - 0.1f;
-        //    return;
-        //}
+        float lerpSpeed = _isCollideZoom ? _distanceSpeed : _zoomSpeed;
+        lerpSpeed = Mathf.Clamp(lerpSpeed, _zoomSpeed, _maxDistance - _minDistance);
         if (Mathf.Round(_cameraFollowSetting.m_CameraDistance * 10) / 10 == Mathf.Round(_cameraDistance * 10) / 10)
             return;
-        _cameraFollowSetting.m_CameraDistance = Mathf.Lerp(_cameraFollowSetting.m_CameraDistance, _cameraDistance, Time.deltaTime);
+        _cameraFollowSetting.m_CameraDistance = Mathf.Lerp(_cameraFollowSetting.m_CameraDistance, _cameraDistance, lerpSpeed * Time.deltaTime);
     }
     #endregion
 
     private void Awake()
     {
-        _camera = gameObject.GetComponent<CinemachineVirtualCamera>();
-        _cameraFollowSetting = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        _cameraLookAtSetting = _camera.GetCinemachineComponent<CinemachinePOV>();
+        _camera = GetComponent<CinemachineVirtualCamera>();
         _cameraCollider = GetComponent<CinemachineCollider>();
+        _cameraFollowSetting = _camera.AddCinemachineComponent<CinemachineFramingTransposer>();
+        _cameraLookAtSetting = _camera.AddCinemachineComponent<CinemachinePOV>();
     }
 
     private void Start()
@@ -267,10 +291,12 @@ public class TownCameraController : MonoBehaviour
             return;
         }
         InitCameraSetting();
+        transform.position = _focusObject.transform.position;
     }
 
     private void LateUpdate()
     {
+        _collideState = CheckCollision();
         ZoomInOut();
         Zoom();
     }

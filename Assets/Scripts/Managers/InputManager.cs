@@ -1,19 +1,30 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.EventSystems;
 
 [Serializable]
 public class InputManager : BaseManager
 {
     public InputManager(int managerId) : base(managerId) {}
 
-    public Action KeyBoardInput = null;
+    private MainInputAction InputActions;
+    public MainInputAction.PlayerActions PlayerInput { get; private set; }
+    public MainInputAction.CameraActions CameraInput { get; private set; }
 
-    public void CheckKeyBoard()
+    public void Init()
     {
-        KeyBoardInput?.Invoke();
+        if (InputActions != null)
+            return;
+        InputActions = new MainInputAction();
+        PlayerInput = InputActions.Player;
+        CameraInput = InputActions.Camera;
+    }
+
+    public void InputActionEnable()
+    {
+        InputActions.Enable();
+    }
+
+    public void InputActionDisable()
+    {
+        InputActions.Disable();
     }
 }

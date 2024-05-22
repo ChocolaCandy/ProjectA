@@ -1,5 +1,5 @@
 {
-    "name": "PlayerAction",
+    "name": "MainInputAction",
     "maps": [
         {
             "name": "Player",
@@ -132,6 +132,54 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Camera",
+            "id": "a6c1de90-b2b1-4c3d-98d2-33d5427ce536",
+            "actions": [
+                {
+                    "name": "LookAt",
+                    "type": "Value",
+                    "id": "2d50526a-73ed-4fc0-9e03-286af9bc4ad7",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom",
+                    "type": "PassThrough",
+                    "id": "e845ec38-aea1-4333-8ff2-8d1d42fb9960",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "729706e3-c9ba-4b3d-9cec-d77f19f2f048",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "LookAt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a6a76a4e-304c-4da9-9933-e75594e9b678",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -7,9 +7,10 @@ public class BaseManager
 {
     [SerializeField]
     private int ManagerID = int.MaxValue;
-    protected BaseManager(int managerId) 
+    protected BaseManager(int managerID) 
     { 
-        if (ManagerID == managerId) return;
-        ManagerID = managerId; 
+        if (ManagerID == managerID) 
+            return;
+        ManagerID = managerID; 
     }
 }

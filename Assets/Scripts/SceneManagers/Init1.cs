@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Init1 : SceneBaseManager
+public class Init1 : BaseSceneManager
 {
     public Transform TempWarpPoint = null;
-    private string _name = UtilityName.Scene2;
-    private void Awake()
+    private void Update()
     {
-        Init(_name);
-        SceneManager.sceneLoaded += OnSceneLoaded1;
-        PlayerController player = FindObjectOfType<PlayerController>();
-        if (player != null)
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            player.gameObject.transform.position = TempWarpPoint.position;
+            SceneManager.LoadScene(1);
         }
     }
-    public void OnSceneLoaded1(Scene scene, LoadSceneMode loadSceneMode)
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        if (!GameObject.FindWithTag("Player"))
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (!player)
         {
-            GameObject a = Resources.Load<GameObject>("Player");
-            GameObject prfabs = Instantiate(a);
-            prfabs.name = "Player";
+            GameObject prefab = Resources.Load<GameObject>("Player");
+            player = Instantiate(prefab);
+            player.name = "Player";
         }
+        player.transform.SetPositionAndRotation(TempWarpPoint.position, TempWarpPoint.rotation);
+    }
+
+    protected override void OnSceneUnLoaded(Scene scene)
+    {
+        
     }
 }

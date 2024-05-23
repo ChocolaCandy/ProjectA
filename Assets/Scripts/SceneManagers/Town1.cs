@@ -1,31 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Town1 : SceneBaseManager
+public class Town1 : BaseSceneManager
 {
-    private string _name = UtilityName.Town1_SceneManager;
-    public Transform CreatePoint = null;
-    private void Awake()
+    public Transform TempWarpPoint = null;
+    private void Update()
     {
-        Init(_name);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        PlayerController player = FindObjectOfType<PlayerController>();
-        if (player != null)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            player.gameObject.transform.position = CreatePoint.position;
-        }
+            SceneManager.LoadScene(0);
+        }        
     }
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        if (!GameObject.FindWithTag("Player"))
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (!player)
         {
-            GameObject a = Resources.Load<GameObject>("Player");
-            GameObject prfabs = Instantiate(a, CreatePoint.position, Quaternion.identity);
-            prfabs.name = "Player";
+            GameObject prefab = Resources.Load<GameObject>("Player");
+            player = Instantiate(prefab, TempWarpPoint.position, TempWarpPoint.rotation);
+            player.name = "Player";
         }
+        player.transform.SetPositionAndRotation(TempWarpPoint.position, TempWarpPoint.rotation);
     }
 
+    protected override void OnSceneUnLoaded(Scene scene)
+    {
+      
+    }
 }

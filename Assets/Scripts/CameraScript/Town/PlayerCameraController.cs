@@ -1,7 +1,7 @@
 using Cinemachine;
 using System;
+using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 [RequireComponent(typeof(CinemachineCollider))]
@@ -291,7 +291,6 @@ public class PlayerCameraController : MonoBehaviour
             return;
         }
         InitCameraSetting();
-        transform.position = _focusObject.transform.position;
     }
 
     private void LateUpdate()

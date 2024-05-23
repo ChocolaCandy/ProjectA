@@ -3,15 +3,8 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public Rigidbody body;
     private void Start()
     {
-      body = GetComponent<Rigidbody>();
+        ResourceManager a = Managers.ResourceManager;
     }
-    private void Update()
-    {
-       
-    }
-
-
 }

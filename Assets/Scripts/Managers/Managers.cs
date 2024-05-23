@@ -46,9 +46,9 @@ public class Managers : MonoBehaviour
             {
                 manager = new GameObject($"{UtilityName.Manager}");
                 manager.tag = "Manager";
+                manager.SetActive(false);
             }
-            Managers managers = manager.GetOrAddComponent<Managers>();
-            _manager = managers;
+            _manager = manager.GetOrAddComponent<Managers>();
             _manager.ManagerID = manager.GetInstanceID();
             _manager._inputManager = new InputManager(_manager.ManagerID);
             _manager._dataManager = new DataManager(_manager.ManagerID);
@@ -60,10 +60,10 @@ public class Managers : MonoBehaviour
                 DontDestroyOnLoaded = true;
             }
             _manager._inputManager.Init();
+            manager.SetActive(true);
         }
     }
     #endregion
-
     private void Awake()
     {
         Init();
@@ -71,7 +71,7 @@ public class Managers : MonoBehaviour
 
     private void OnEnable()
     {
-        Managers.InputManager.InputActionEnable();
+       InputManager.InputActionEnable();
     }
 
     void Start()
@@ -79,14 +79,9 @@ public class Managers : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-
-    }
-
     private void OnDisable()
     {
-        Managers.InputManager.InputActionDisable();
+       InputManager.InputActionDisable();
     }
 
 }

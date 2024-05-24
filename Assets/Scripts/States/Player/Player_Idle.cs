@@ -1,36 +1,22 @@
 using UnityEngine;
 
-public class Player_Idle : PlayerStates
+public class Player_Idle : Player_Base
 {
-    public Player_Idle(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    public Player_Idle(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
-    public override void OnEnter()
+    protected override void SetOnEnter()
     {
-        isReadyToJump = true;
-        base.OnEnter();
-        //_playerController.PlayerRigidbody.velocity = Vector3.zero;
+        PlayerStateMachine.PlayerController.PlayerRigidbody.velocity = Vector3.zero;
+        SetJumpable();
+        SetDashable();
     }
 
-    public override void OnUpdate()
+    protected override void SetOnUpdate()
     {
-        base.OnUpdate();
+        GetMoveInput();
+        GetRunPress();
         if (PlayerMoveInput != Vector2.zero)
-            ChangeWalk();
-    }
-
-    public override void OnPhysicsUpdate()
-    {
-
-    }
-
-    public override void OnExit()
-    {
-        isReadyToJump = false;
-        base.OnExit();
-    }
-
-    public override void OnTriggerEnter(Collider other)
-    {
-        
+            ChangeStateToWalk();
+     
     }
 }

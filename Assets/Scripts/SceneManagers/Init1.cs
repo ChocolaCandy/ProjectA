@@ -6,28 +6,37 @@ using UnityEngine.SceneManagement;
 public class Init1 : BaseSceneManager
 {
     public Transform TempWarpPoint = null;
+    public GameObject Player = null;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SceneManager.LoadScene(1);
+            LoadScene(1);
+        }
+    }
+    private void Start()
+    {
+        if (Player)
+        {
+            Player.transform.position = new Vector3(300, 300, 300);
         }
     }
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (!player)
+        Player = GameObject.FindGameObjectWithTag("Player");
+        if (!Player)
         {
             GameObject prefab = Resources.Load<GameObject>("Player");
-            player = Instantiate(prefab);
-            player.name = "Player";
+            Player = Instantiate(prefab);
+            DontDestroyOnLoad(Player);
         }
-        player.transform.SetPositionAndRotation(TempWarpPoint.position, TempWarpPoint.rotation);
+        Player.name = "Player.Town1";
     }
 
     protected override void OnSceneUnLoaded(Scene scene)
     {
-        
+        Debug.Log("Town1 UnLoad");
     }
 }

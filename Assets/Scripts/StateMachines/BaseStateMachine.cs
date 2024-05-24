@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BaseStateMachine
@@ -6,14 +7,14 @@ public class BaseStateMachine
     public BaseState _pastState;
     private bool _isInit = false; 
 
-    public virtual void Init(BaseState initState)
+    public void Init(BaseState initState)
     {
         if (_isInit)
         {
             if(Utility.IsDebugMode) Debug.Log("Already initialized");
             return;
         }
-        if(!OnChangeState(initState, false))
+        if(!ChangeState(initState, false))
         {
             if (Utility.IsDebugMode) Debug.Log("Initialized failed");
             return;
@@ -22,7 +23,7 @@ public class BaseStateMachine
         _isInit = true;
     }
 
-    public virtual void OnUpdate()
+    public void OnUpdate()
     {
         if(!_isInit)
         {
@@ -30,37 +31,37 @@ public class BaseStateMachine
             return;
         }
         _currentState.OnUpdate();
-        //Debug.Log(_currentState);
+        Debug.Log(_currentState);
     }
 
-    public virtual void OnPhysicsUpdate()
+    public void OnFixUpdate()
     {
         if (!_isInit)
         {
             if (Utility.IsDebugMode) Debug.Log("No initialized");
             return;
         }
-        _currentState.OnPhysicsUpdate();
+        _currentState.OnFixUpdate();
     }
 
-    public virtual bool OnChangeState(BaseState changeState, bool init = true)
+    public bool ChangeState(BaseState State, bool init = true)
     {
         if (!_isInit && init)
         {
             if (Utility.IsDebugMode) Debug.Log("No initialized");
             return false;
         }
-        if (_currentState == changeState || changeState == null)
+        if (_currentState == State || State == null)
             return false;
         _currentState?.OnExit();
         _pastState = _currentState;
-        _currentState = changeState;
+        _currentState = State;
         _currentState.OnEnter();
         return true;
     }
 
-    public virtual void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
-        _currentState?.OnTriggerEnter(other);
+        _currentState.OnTriggerEnter(other);
     }
 }

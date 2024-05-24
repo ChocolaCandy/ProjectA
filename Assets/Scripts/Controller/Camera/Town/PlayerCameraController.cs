@@ -1,6 +1,5 @@
 using Cinemachine;
 using System;
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
@@ -53,8 +52,8 @@ public class PlayerCameraController : MonoBehaviour
     //Value of FramingTransposer DeadZone
     private float DeadZoneWidth = 0.0f;
     private float DeadZoneHeight = 0.0f;
-    private float SoftDeadZoneWidth = 0.8f;
-    private float SoftDeadZoneHeight = 0.8f;
+    private float SoftDeadZoneWidth = 0.0f;
+    private float SoftDeadZoneHeight = 0.0f;
 
     //Value of CinemachinePOV horizontal axis
     private float _minMouseValueX = -180.0f;

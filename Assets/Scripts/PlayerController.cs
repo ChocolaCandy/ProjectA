@@ -1,10 +1,8 @@
 using UnityEngine;
 
-//[RequireComponent (typeof(Input))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : BaseController
 {
-    public Input PlayerInput { get; private set; }
     public GameObject PlayerCamera { get; private set; }
     public Rigidbody PlayerRigidbody { get; private set; }
 
@@ -12,38 +10,31 @@ public class PlayerController : BaseController
 
     public RigidbodyData PlayerRigidbodyData;
 
-    protected override void RunAwake()
+    protected override void SetComponent()
     {
-       // PlayerInput = GetComponent<Input>();
         PlayerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
         PlayerRigidbody = GetComponent<Rigidbody>();
         PlayerStateMachine = new PlayerStateMachine(this);
-        DontDestroyOnLoad(gameObject);
-        Init();
     }
 
-    protected override void RunStart()
+    protected override void Initialize()
     {
+        PlayerRigidbodyData.Init(PlayerRigidbody);
         PlayerStateMachine.Init(PlayerStateMachine.Idle);
     }
 
-    protected override void RunUpdate()
+    protected override void OnUpdate()
     {
         PlayerStateMachine.OnUpdate();
     }
 
-    protected override void RunFixUpdate()
+    protected override void OnFixUpdate()
     {
-        PlayerStateMachine.OnPhysicsUpdate();
+        PlayerStateMachine.OnFixUpdate();
     }
 
-    protected override void RunTriggerEnter(Collider other)
+    protected override void TriggerEnter(Collider other)
     {
         PlayerStateMachine.OnTriggerEnter(other);
-    }
-
-    private void Init()
-    {
-        PlayerRigidbodyData.Init(PlayerRigidbody);
     }
 }

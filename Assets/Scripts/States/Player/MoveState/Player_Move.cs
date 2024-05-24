@@ -1,14 +1,11 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player_Walk : PlayerStates
+public abstract class Player_Move : Player_Base
 {
-    public Player_Walk(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    public Player_Move(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
-    #region Private Fields
-    //Player movement value
-    private float _moveSpeed = 5.0f;
-    private float _rotateTime = 0.13f;
+    //RoateValue
+    private float _rotateTime = 0.02f;
     private float _rotateAngle = 0.0f;
 
     //Check input vector
@@ -18,50 +15,44 @@ public class Player_Walk : PlayerStates
     //SmoothDamp parameter 
     private float _currentVelocity;
     private float _elapsedTime = 0.0f;
-    #endregion
+    
+    //MoveSpeed
+    protected float _moveSpeed = 0.0f;
 
-    public override void OnEnter()
+    protected override void SetOnEnter()
     {
-        isReadyToJump = true;
-        base.OnEnter();
+        SetSpeed();
+        SetJumpable();
     }
-
-    public override void OnUpdate()
+    protected override void SetOnUpdate()
     {
-        base.OnUpdate();
+        GetMoveInput();
+        GetRunPress();
         if (PlayerMoveInput == Vector2.zero)
-            ChangeIdle();
+            ChangeStateToIdle();
     }
 
-    public override void OnExit()
+    protected override void SetOnFixUpdate()
     {
-        base.OnExit();
+        Move(_moveSpeed);
     }
 
-    public override void OnPhysicsUpdate()
-    {
-        Move();
-    }
+    protected abstract void SetSpeed();
 
-    public override void OnTriggerEnter(Collider other)
-    {
-       
-    }
-
-    #region Move Methods
     /// <summary>
     /// 플레이어 이동 로직 메서드
     /// </summary>
-    protected void Move()
+    protected void Move(float moveSpeed)
     {
         Vector3 inputDirectionVector = GetInputDirectionVector();
         if (Is_newInput())
             InitValues();
         Set_rotateAngle(inputDirectionVector);
         RotatePlayer();
-        MovePlayer();
+        MovePlayer(moveSpeed);
     }
 
+    #region Move Methods
     /// <summary>
     /// Move입력키에 따른 방향벡터 반환 메서드
     /// </summary>
@@ -100,7 +91,7 @@ public class Player_Walk : PlayerStates
     {
         float rotateAngle = Mathf.Atan2(inputDirectionVector.x, inputDirectionVector.z) * Mathf.Rad2Deg;
         if (rotateAngle < 0) rotateAngle += 360;
-        rotateAngle += _playerController.PlayerCamera.transform.eulerAngles.y;
+        rotateAngle += PlayerStateMachine.PlayerController.PlayerCamera.transform.eulerAngles.y;
         if (rotateAngle > 360) rotateAngle -= 360;
         if (_rotateAngle == rotateAngle)
             return;
@@ -113,23 +104,23 @@ public class Player_Walk : PlayerStates
     /// </summary>
     private void RotatePlayer()
     {
-        if (Mathf.Round(_playerController.PlayerRigidbody.transform.eulerAngles.y) == Mathf.Round(_rotateAngle))
+        if (Mathf.Round(PlayerStateMachine.PlayerController.PlayerRigidbody.transform.eulerAngles.y) == Mathf.Round(_rotateAngle))
             return;
-        float currentAngle = _playerController.PlayerRigidbody.transform.eulerAngles.y;
+        float currentAngle = PlayerStateMachine.PlayerController.PlayerRigidbody.transform.eulerAngles.y;
         float smoothAngle = Mathf.SmoothDampAngle(currentAngle, _rotateAngle, ref _currentVelocity, _rotateTime - _elapsedTime);
         _elapsedTime += Time.fixedDeltaTime;
-        _playerController.PlayerRigidbody.MoveRotation(Quaternion.Euler(0.0f, smoothAngle, 0.0f));
+        PlayerStateMachine.PlayerController.PlayerRigidbody.MoveRotation(Quaternion.Euler(0.0f, smoothAngle, 0.0f));
     }
 
     /// <summary>
     /// 플레이어 이동 메서드
     /// </summary>
-    private void MovePlayer()
+    private void MovePlayer(float moveSpeed)
     {
         Vector3 rotateFowardVector = RotateFowardVector(_rotateAngle);
-        Vector3 _currentVelocity = _playerController.PlayerRigidbody.velocity;
+        Vector3 _currentVelocity = PlayerStateMachine.PlayerController.PlayerRigidbody.velocity;
         _currentVelocity.y = 0f;
-        _playerController.PlayerRigidbody.AddForce(rotateFowardVector * _moveSpeed - _currentVelocity, ForceMode.VelocityChange);
+        PlayerStateMachine.PlayerController.PlayerRigidbody.AddForce(rotateFowardVector * moveSpeed - _currentVelocity, ForceMode.VelocityChange);
     }
 
     /// <summary>

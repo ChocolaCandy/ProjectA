@@ -17,7 +17,7 @@ MonoBehaviour:
   _angularDrag: 0.05
   _automaticCenterOfMass: 1
   _automaticTensor: 1
-  _useGravity: 0
+  _useGravity: 1
   _isKinematic: 0
   _interpolate: 1
   _collisionDetection: 1

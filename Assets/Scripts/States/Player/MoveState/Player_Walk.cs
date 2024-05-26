@@ -6,15 +6,19 @@ public class Player_Walk : Player_Move
 
     private float _walkSpeed = 5.0f;
 
-    protected override void SetSpeed()
+    protected override void SetOnEnter()
     {
-        _moveSpeed = _walkSpeed;
+        base.SetOnEnter();
+        SetDashable();
     }
 
     protected override void SetOnUpdate()
     {
        base.SetOnUpdate();
-        if (RunButtonClicked)
-            ChangeStateToRun();
+    }
+
+    protected override void SetSpeed()
+    {
+        _moveSpeed = _walkSpeed;
     }
 }

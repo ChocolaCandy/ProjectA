@@ -10,20 +10,8 @@ public abstract class Player_Base : BaseState
 
     protected PlayerStateMachine PlayerStateMachine { get; }
     protected Vector2 PlayerMoveInput { get; private set; }
-    protected bool RunButtonClicked;
     private bool _jumpable = false;
     private bool _dashable = false;
-
-    private float _rotateTime = 0.02f;
-    private float _rotateAngle = 0.0f;
-
-    //Check input vector
-    private Vector3 _newInput = Vector3.zero;
-    private Vector3 _currentInput = Vector3.zero;
-
-    //SmoothDamp parameter 
-    private float _currentVelocity;
-    private float _elapsedTime = 0.0f;
 
     public override void OnEnter()
     {
@@ -65,11 +53,6 @@ public abstract class Player_Base : BaseState
     protected void GetMoveInput()
     {
         PlayerMoveInput = Managers.InputManager.PlayerInput.Move.ReadValue<Vector2>();
-    }
-
-    protected void GetRunPress()
-    {
-        RunButtonClicked =  Managers.InputManager.PlayerInput.Run.IsPressed();
     }
 
     protected void SetJumpable()

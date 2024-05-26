@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BaseStateMachine
@@ -30,8 +29,8 @@ public class BaseStateMachine
             if (Utility.IsDebugMode) Debug.Log("No initialized");
             return;
         }
-        _currentState.OnUpdate();
         Debug.Log(_currentState);
+        _currentState.OnUpdate();
     }
 
     public void OnFixUpdate()

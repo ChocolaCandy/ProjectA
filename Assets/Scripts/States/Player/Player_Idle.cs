@@ -14,9 +14,7 @@ public class Player_Idle : Player_Base
     protected override void SetOnUpdate()
     {
         GetMoveInput();
-        GetRunPress();
         if (PlayerMoveInput != Vector2.zero)
             ChangeStateToWalk();
-     
     }
 }

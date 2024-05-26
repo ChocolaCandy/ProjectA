@@ -24,10 +24,10 @@ public abstract class Player_Move : Player_Base
         SetSpeed();
         SetJumpable();
     }
+
     protected override void SetOnUpdate()
     {
         GetMoveInput();
-        GetRunPress();
         if (PlayerMoveInput == Vector2.zero)
             ChangeStateToIdle();
     }

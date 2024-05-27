@@ -44,8 +44,8 @@ public class Managers : MonoBehaviour
             GameObject manager = GameObject.FindWithTag("Manager");
             if (manager == null)
             {
-                manager = new GameObject($"{UtilityName.Manager}");
-                manager.tag = "Manager";
+                manager = new GameObject($"{ObjectName.Manager}");
+                manager.tag = TagName.Manager;
                 manager.SetActive(false);
             }
             _manager = manager.GetOrAddComponent<Managers>();

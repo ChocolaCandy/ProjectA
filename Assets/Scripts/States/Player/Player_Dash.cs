@@ -7,9 +7,9 @@ public class Player_Dash : Player_Base
 {
     public Player_Dash(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
-    private float _dashSpeed = 5.0f;
-    private bool isEnterEnd = false;
+    private float _dashSpeed = 10.0f;
     float Starttime = 0;
+
     protected override void SetOnEnter()
     {
         Starttime = Time.time;
@@ -38,7 +38,6 @@ public class Player_Dash : Player_Base
 
     private void Dash()
     {
-        //ToDo Dash Logic
-        PlayerStateMachine.PlayerController.PlayerRigidbody.AddForce(PlayerStateMachine.PlayerController.PlayerRigidbody.transform.forward * _dashSpeed, ForceMode.VelocityChange);
+        PlayerStateMachine.PlayerController.PlayerRigidbody.velocity = PlayerStateMachine.PlayerController.PlayerRigidbody.transform.forward * _dashSpeed;
     }
 }

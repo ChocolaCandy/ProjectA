@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class UtilityName
+public static class ObjectName
 {
     private const char DONTDESTROY = '¡Ù';
     public static string Manager = $"{DONTDESTROY}Manager";

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class Player_Move : Player_Base
 {
@@ -7,10 +8,6 @@ public abstract class Player_Move : Player_Base
     //RoateValue
     private float _rotateTime = 0.02f;
     private float _rotateAngle = 0.0f;
-
-    //Check input vector
-    private Vector3 _newInput = Vector3.zero;
-    private Vector3 _currentInput = Vector3.zero;
 
     //SmoothDamp parameter 
     private float _currentVelocity;
@@ -22,7 +19,7 @@ public abstract class Player_Move : Player_Base
     protected override void SetOnEnter()
     {
         SetSpeed();
-        SetJumpable();
+        AddJumping();
     }
 
     protected override void SetOnUpdate()
@@ -34,7 +31,8 @@ public abstract class Player_Move : Player_Base
 
     protected override void SetOnFixUpdate()
     {
-        Move(_moveSpeed);
+        if (PlayerMoveInput != Vector2.zero)
+            Move();
     }
 
     protected abstract void SetSpeed();
@@ -42,60 +40,44 @@ public abstract class Player_Move : Player_Base
     /// <summary>
     /// 플레이어 이동 로직 메서드
     /// </summary>
-    protected void Move(float moveSpeed)
+    protected void Move()
     {
-        Vector3 inputDirectionVector = GetInputDirectionVector();
-        if (Is_newInput())
+        float rotateAngle = Set_rotateAngle();
+        if (IsNewAngle(rotateAngle))
             InitValues();
-        Set_rotateAngle(inputDirectionVector);
         RotatePlayer();
-        MovePlayer(moveSpeed);
+        MovePlayer();
     }
 
     #region Move Methods
     /// <summary>
-    /// Move입력키에 따른 방향벡터 반환 메서드
+    /// 회전각을 구하는 메서드(입력값의 각도 + 카메라 각도)
     /// </summary>
-    /// <returns>InputDirectionVector</returns>
-    private Vector3 GetInputDirectionVector()
+    private float Set_rotateAngle()
     {
-        Vector3 inputVector = new Vector3(PlayerMoveInput.x, 0.0f, PlayerMoveInput.y);
-        _newInput = inputVector;
-        return inputVector;
+        float rotateAngle = Mathf.Atan2(PlayerMoveInput.x, PlayerMoveInput.y) * Mathf.Rad2Deg;
+        if (rotateAngle < 0) rotateAngle += 360;
+        rotateAngle += PlayerStateMachine.PlayerController.PlayerCamera.transform.eulerAngles.y;
+        if (rotateAngle > 360) rotateAngle -= 360;
+        return rotateAngle;
     }
 
     /// <summary>
-    /// Move입력키가 다른 값인지 판단 메서드
+    /// 회전각이 다른지 판단 후 설정하는 메서드
     /// </summary>
-    /// <returns>Boolean</returns>
-    private bool Is_newInput()
+    private bool IsNewAngle(float angle)
     {
-        if (_currentInput == _newInput)
+        if (_rotateAngle == angle)
             return false;
+        _rotateAngle = angle;
         return true;
     }
 
     /// <summary>
-    /// 새로운 Move입력키 발생시 변수 초기화 메서드
+    /// 변수 초기화 메서드
     /// </summary>
     private void InitValues()
     {
-        _currentInput = _newInput;
-    }
-
-    /// <summary>
-    /// 방향벡터로 회전하기 위한 각도계산 메서드
-    /// </summary>
-    /// <param name="inputDirectionVector"></param>
-    private void Set_rotateAngle(Vector3 inputDirectionVector)
-    {
-        float rotateAngle = Mathf.Atan2(inputDirectionVector.x, inputDirectionVector.z) * Mathf.Rad2Deg;
-        if (rotateAngle < 0) rotateAngle += 360;
-        rotateAngle += PlayerStateMachine.PlayerController.PlayerCamera.transform.eulerAngles.y;
-        if (rotateAngle > 360) rotateAngle -= 360;
-        if (_rotateAngle == rotateAngle)
-            return;
-        _rotateAngle = rotateAngle;
         _elapsedTime = 0.0f;
     }
 
@@ -104,7 +86,7 @@ public abstract class Player_Move : Player_Base
     /// </summary>
     private void RotatePlayer()
     {
-        if (Mathf.Round(PlayerStateMachine.PlayerController.PlayerRigidbody.transform.eulerAngles.y) == Mathf.Round(_rotateAngle))
+        if (PlayerStateMachine.PlayerController.PlayerRigidbody.transform.eulerAngles.y == _rotateAngle)
             return;
         float currentAngle = PlayerStateMachine.PlayerController.PlayerRigidbody.transform.eulerAngles.y;
         float smoothAngle = Mathf.SmoothDampAngle(currentAngle, _rotateAngle, ref _currentVelocity, _rotateTime - _elapsedTime);
@@ -115,22 +97,20 @@ public abstract class Player_Move : Player_Base
     /// <summary>
     /// 플레이어 이동 메서드
     /// </summary>
-    private void MovePlayer(float moveSpeed)
+    private void MovePlayer()
     {
-        Vector3 rotateFowardVector = RotateFowardVector(_rotateAngle);
-        Vector3 _currentVelocity = PlayerStateMachine.PlayerController.PlayerRigidbody.velocity;
-        _currentVelocity.y = 0f;
-        PlayerStateMachine.PlayerController.PlayerRigidbody.AddForce(rotateFowardVector * moveSpeed - _currentVelocity, ForceMode.VelocityChange);
+        Vector3 rotateFowardVector = RotateFowardVector();
+        Vector3 playerVelocity = PlayerStateMachine.PlayerController.PlayerRigidbody.velocity;
+        playerVelocity.y = 0f;
+        PlayerStateMachine.PlayerController.PlayerRigidbody.AddForce(rotateFowardVector * _moveSpeed - playerVelocity, ForceMode.VelocityChange);
     }
 
     /// <summary>
     /// 플레이어 forward벡터 회전 메서드
     /// </summary>
-    /// <param name="rotateAngle"></param>
-    /// <returns></returns>
-    private Vector3 RotateFowardVector(float rotateAngle)
+    private Vector3 RotateFowardVector()
     {
-        return Quaternion.Euler(0, rotateAngle, 0) * Vector3.forward;
+        return Quaternion.Euler(0, _rotateAngle, 0) * Vector3.forward;
     }
     #endregion
 }

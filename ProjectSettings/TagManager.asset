@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Manager
   - PlayerCamera
+  - Player3D
+  - Player2D
   layers:
   - Default
   - TransparentFX

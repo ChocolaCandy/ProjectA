@@ -10,16 +10,16 @@ public abstract class Player_Base : BaseState
 
     protected PlayerStateMachine PlayerStateMachine { get; }
     protected Vector2 PlayerMoveInput { get; private set; }
-    private bool _jumpable = false;
-    private bool _dashable = false;
+    private bool _jumping = false;
+    private bool _dashing = false;
 
     public override void OnEnter()
     {
         SetOnEnter();
-        if (_jumpable)
+        if (_jumping)
             Managers.InputManager.PlayerInput.Jump.started += ChangeStateToJump;
-        if (_dashable)
-            Managers.InputManager.PlayerInput.Run.started += ChangeStateToDash;
+        if (_dashing)
+            Managers.InputManager.PlayerInput.Dash.started += ChangeStateToDash;
     }
 
     public override void OnUpdate()
@@ -35,10 +35,10 @@ public abstract class Player_Base : BaseState
     public override void OnExit()
     {
         SetOnExit(); 
-        if (_jumpable)
+        if (_jumping)
             Managers.InputManager.PlayerInput.Jump.started -= ChangeStateToJump;
-        if (_dashable)
-            Managers.InputManager.PlayerInput.Run.started -= ChangeStateToDash;
+        if (_dashing)
+            Managers.InputManager.PlayerInput.Dash.started -= ChangeStateToDash;
     }
 
     protected virtual void SetOnEnter() { }
@@ -55,16 +55,16 @@ public abstract class Player_Base : BaseState
         PlayerMoveInput = Managers.InputManager.PlayerInput.Move.ReadValue<Vector2>();
     }
 
-    protected void SetJumpable()
+    protected void AddJumping()
     {
-        if(!_jumpable)
-            _jumpable = true;
+        if(!_jumping)
+            _jumping = true;
     }
 
-    protected void SetDashable()
+    protected void AddDashing()
     {
-        if (!_dashable)
-            _dashable = true;
+        if (!_dashing)
+            _dashing = true;
     }
 
     #region ChangeState
@@ -81,6 +81,11 @@ public abstract class Player_Base : BaseState
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Run);
     }
+    protected void ChangeStateToPast()
+    {
+        PlayerStateMachine.ChangeState(PlayerStateMachine._pastState);
+    }
+
     private void ChangeStateToDash(InputAction.CallbackContext context)
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Dash);

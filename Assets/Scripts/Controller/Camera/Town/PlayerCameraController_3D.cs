@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 [RequireComponent(typeof(CinemachineCollider))]
-public class PlayerCameraController : MonoBehaviour
+public class PlayerCameraController_3D : MonoBehaviour
 {
     #region SerializeFields
     //Costomizeable setting values
@@ -96,10 +96,10 @@ public class PlayerCameraController : MonoBehaviour
     /// <returns>Transform or Null</returns>
     private Transform GetFocusObject()
     {
-        GameObject player = GameObject.FindWithTag(TagName.Player);
+        GameObject player = GameObject.FindWithTag(TagName.Player3D);
         if (!player)
             return null;
-        Transform focusPoint = player.transform.Find(UtilityName.FocusPoint);
+        Transform focusPoint = player.transform.Find(ObjectName.FocusPoint);
         if (!focusPoint)
         {
             focusPoint = CreateFocusPoint(player);
@@ -114,7 +114,7 @@ public class PlayerCameraController : MonoBehaviour
     private Transform CreateFocusPoint(GameObject player)
     {
         CapsuleCollider collider;
-        Transform focusPoint = new GameObject(UtilityName.FocusPoint).transform;
+        Transform focusPoint = new GameObject(ObjectName.FocusPoint).transform;
         focusPoint.SetParent(player.transform);
         focusPoint.localRotation = Quaternion.identity;
         if (player.TryGetComponent<CapsuleCollider>(out collider))

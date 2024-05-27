@@ -7,8 +7,8 @@ public class Player_Idle : Player_Base
     protected override void SetOnEnter()
     {
         PlayerStateMachine.PlayerController.PlayerRigidbody.velocity = Vector3.zero;
-        SetJumpable();
-        SetDashable();
+        AddJumping();
+        AddDashing();
     }
 
     protected override void SetOnUpdate()

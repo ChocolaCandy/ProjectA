@@ -7,19 +7,26 @@ public class Town1 : BaseSceneManager
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        GameObject Player = GameObject.FindGameObjectWithTag("Player");
-        if (!Player)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (!player)
         {
-            GameObject prefab = Resources.Load<GameObject>("Player");
-            Player = Instantiate(prefab, TempWarpPoint.position, TempWarpPoint.rotation);
-            Player.name = "Player";
-            DontDestroyOnLoad(Player);
+            player = new GameObject("Player");
+            player.AddComponent<DontDestroyOnLoadObject>().SetDontDestroyOnLoad();
+            player.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            player.tag = TagName.Player;
+        }
+        Transform player3D = player.transform.Find("Player3D");
+        if (!player3D)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Player3D");
+            player3D = Instantiate(prefab, TempWarpPoint.position, TempWarpPoint.rotation, player.transform).transform;
+            player3D.name = "Player3D";
+            player3D.tag = TagName.Player3D;
         }
     }
 
-    
     protected override void OnSceneUnLoaded(Scene scene)
     {
-
+        GameObject.FindGameObjectWithTag("Player").transform.Find("Player3D").gameObject.SetActive(false);
     }
 }

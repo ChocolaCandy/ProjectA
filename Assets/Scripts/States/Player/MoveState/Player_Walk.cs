@@ -9,7 +9,7 @@ public class Player_Walk : Player_Move
     protected override void SetOnEnter()
     {
         base.SetOnEnter();
-        SetDashable();
+        AddDashing();
     }
 
     protected override void SetOnUpdate()

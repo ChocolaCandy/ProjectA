@@ -5,10 +5,10 @@ public class Player_Run : Player_Move
     public Player_Run(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
     private float _runSpeed = 8.0f;
+
     protected override void SetOnEnter()
     {
         base.SetOnEnter();
-        Debug.Log("Run");
     }
 
 

@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "73fda784-2a21-4d78-80ac-30a133f102b7",
                     "expectedControlType": "Button",
@@ -147,11 +147,11 @@
                 {
                     "name": "",
                     "id": "0bc3bf46-c4fa-4b5e-9075-75f4908f01e9",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "Run",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

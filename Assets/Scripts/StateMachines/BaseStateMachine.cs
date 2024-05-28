@@ -10,15 +10,15 @@ public class BaseStateMachine
     {
         if (_isInit)
         {
-            if(Utility.IsDebugMode) Debug.Log("Already initialized");
+            if(UtilityField.IsDebugMode) Debug.Log("Already initialized");
             return;
         }
         if(!ChangeState(initState, false))
         {
-            if (Utility.IsDebugMode) Debug.Log("Initialized failed");
+            if (UtilityField.IsDebugMode) Debug.Log("Initialized failed");
             return;
         }
-        if (Utility.IsDebugMode) Debug.Log("Initialized");
+        if (UtilityField.IsDebugMode) Debug.Log("Initialized");
         _isInit = true;
     }
 
@@ -26,7 +26,7 @@ public class BaseStateMachine
     {
         if(!_isInit)
         {
-            if (Utility.IsDebugMode) Debug.Log("No initialized");
+            if (UtilityField.IsDebugMode) Debug.Log("No initialized");
             return;
         }
         Debug.Log(_currentState);
@@ -37,7 +37,7 @@ public class BaseStateMachine
     {
         if (!_isInit)
         {
-            if (Utility.IsDebugMode) Debug.Log("No initialized");
+            if (UtilityField.IsDebugMode) Debug.Log("No initialized");
             return;
         }
         _currentState.OnFixUpdate();
@@ -47,7 +47,7 @@ public class BaseStateMachine
     {
         if (!_isInit && init)
         {
-            if (Utility.IsDebugMode) Debug.Log("No initialized");
+            if (UtilityField.IsDebugMode) Debug.Log("No initialized");
             return false;
         }
         if (_currentState == State || State == null)

@@ -1,6 +1,7 @@
 using Cinemachine;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 [RequireComponent(typeof(CinemachineCollider))]
@@ -129,7 +130,6 @@ public class PlayerCameraController_3D : MonoBehaviour
     /// </summary>
     private void InitCameraSetting()
     {
-        CameraTargetSetting();
         LensSetting();
         FollowingSetting();
         LookAtSetting();
@@ -279,6 +279,8 @@ public class PlayerCameraController_3D : MonoBehaviour
         _cameraCollider = GetComponent<CinemachineCollider>();
         _cameraFollowSetting = _camera.AddCinemachineComponent<CinemachineFramingTransposer>();
         _cameraLookAtSetting = _camera.AddCinemachineComponent<CinemachinePOV>();
+        InitCameraSetting();
+        Debug.Log("Camera Awake");
     }
 
     private void Start()
@@ -289,7 +291,8 @@ public class PlayerCameraController_3D : MonoBehaviour
             //Exception Handling
             return;
         }
-        InitCameraSetting();
+        CameraTargetSetting();
+        Debug.Log("Camera Start");
     }
 
     private void LateUpdate()

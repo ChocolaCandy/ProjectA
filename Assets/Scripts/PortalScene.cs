@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class PortalScene : MonoBehaviour
 {
+    public string SceneName;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player3D"))
         {
-            other.gameObject.SetActive(false);
-            SceneManager.LoadScene("Test_Title");
+            SceneManager.LoadScene(SceneName);
         }
     }
 }

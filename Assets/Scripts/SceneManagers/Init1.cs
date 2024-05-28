@@ -13,6 +13,7 @@ public class Init1 : BaseSceneManager
         if (!player)
         {
             player = new GameObject("Player");
+            player.AddComponent<DontDestroyOnLoadObject>().SetDontDestroyOnLoad();
             player.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             player.tag = TagName.Player;
         }
@@ -24,11 +25,13 @@ public class Init1 : BaseSceneManager
             player3D.name = "Player3D";
             player3D.tag = TagName.Player3D;
         }
-        DontDestroyOnLoad(player);
+        player3D.position = TempWarpPoint.position;
+        player3D.gameObject.SetActive(true);
+        Debug.Log("Scene Load");
     }
 
     protected override void OnSceneUnLoaded(Scene scene)
     {
-        Debug.Log("Town1 UnLoad");
+        GameObject.FindGameObjectWithTag("Player").transform.Find("Player3D").gameObject.SetActive(false);
     }
 }

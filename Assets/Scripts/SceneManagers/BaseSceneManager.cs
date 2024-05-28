@@ -35,7 +35,6 @@ public abstract class BaseSceneManager : MonoBehaviour
     private void ActionSceneUnLoad(Scene scene)
     {
         SceneManager.sceneUnloaded -= ActionSceneUnLoad;
-        Debug.Log("UnLoad Cancel");
         OnSceneUnLoaded(scene);
     }
 

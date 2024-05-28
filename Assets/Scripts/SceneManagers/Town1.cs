@@ -23,6 +23,8 @@ public class Town1 : BaseSceneManager
             player3D.name = "Player3D";
             player3D.tag = TagName.Player3D;
         }
+        player3D.position = TempWarpPoint.position;
+        player3D.gameObject.SetActive(true);
     }
 
     protected override void OnSceneUnLoaded(Scene scene)

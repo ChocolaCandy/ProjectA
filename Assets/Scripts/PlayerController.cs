@@ -12,9 +12,13 @@ public class PlayerController : BaseController
 
     protected override void SetComponent()
     {
-        PlayerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
         PlayerRigidbody = GetComponent<Rigidbody>();
         PlayerStateMachine = new PlayerStateMachine(this);
+    }
+
+    protected override void SetOtherObject()
+    {
+        PlayerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
     }
 
     protected override void Initialize()
@@ -37,4 +41,5 @@ public class PlayerController : BaseController
     {
         PlayerStateMachine.OnTriggerEnter(other);
     }
+
 }

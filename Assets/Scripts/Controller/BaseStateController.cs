@@ -7,6 +7,11 @@ public abstract class BaseController : MonoBehaviour
         SetComponent();
     }
 
+    private void OnEnable()
+    {
+        SetOtherObject();
+    }
+
     private void Start()
     {
         Initialize();
@@ -28,6 +33,7 @@ public abstract class BaseController : MonoBehaviour
     }
 
     protected abstract void SetComponent();
+    protected abstract void SetOtherObject();
     protected abstract void Initialize();
     protected abstract void OnUpdate();
     protected abstract void OnFixUpdate();

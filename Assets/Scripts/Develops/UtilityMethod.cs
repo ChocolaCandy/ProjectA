@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Utility
+public static class UtilityMethod
 {
-    #region Fields
-    public static bool IsDebugMode = false;
-    #endregion
-
     #region NonExtension Methods
     #endregion
 

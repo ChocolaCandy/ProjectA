@@ -9,14 +9,12 @@ public static class UtilityMethod
 
     #region Extension Methods
     //컴포넌트를 자동 생성해서 가져오는 익스텐션 메서드
-    public static T AutoGetComponent<T>(this GameObject gameObject) where T : Component
+    public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
     {
-        T tempComponent = null;
-        if (gameObject.GetComponent<T>() == null)
-        {
-            tempComponent = gameObject.AddComponent<T>();
-        }
-        return tempComponent;
+        T returnComponent = gameObject.GetComponent<T>();
+        if (returnComponent == null)
+            returnComponent = gameObject.AddComponent<T>();
+        return returnComponent;
     }
     #endregion
 }

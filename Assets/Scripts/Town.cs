@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Town1 : BaseSceneManager
+public class Town : MonoBehaviour
 {
     public Transform TempWarpPoint = null;
 
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (!player)
@@ -24,11 +24,5 @@ public class Town1 : BaseSceneManager
             player3D.tag = TagName.Player3D;
         }
         player3D.position = TempWarpPoint.position;
-        player3D.gameObject.SetActive(true);
-    }
-
-    protected override void OnSceneUnLoaded(Scene scene)
-    {
-        GameObject.FindGameObjectWithTag("Player").transform.Find("Player3D").gameObject.SetActive(false);
     }
 }

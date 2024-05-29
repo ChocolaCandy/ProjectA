@@ -13,6 +13,7 @@ public class Player_Dash : Player_Base
     protected override void SetOnEnter()
     {
         Starttime = Time.time;
+        AddMoving();
         Dash();
     }
 
@@ -20,7 +21,6 @@ public class Player_Dash : Player_Base
     {
         if (Wait(0.5f))
         {
-            GetMoveInput();
             if (PlayerMoveInput != Vector2.zero)
                 ChangeStateToRun();
             else

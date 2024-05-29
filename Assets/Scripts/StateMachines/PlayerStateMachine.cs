@@ -1,8 +1,9 @@
 
 public class PlayerStateMachine : BaseStateMachine
 {
-    public PlayerController PlayerController;
+    public PlayerController PlayerController; //플레이어 컨트롤러
 
+    //상태머신 생성자
     public PlayerStateMachine(PlayerController controller)
     { 
         Idle = new Player_Idle(this);
@@ -10,9 +11,12 @@ public class PlayerStateMachine : BaseStateMachine
         Run = new Player_Run(this);
         Dash = new Player_Dash(this);
         Jump = new Player_Jump(this);
+
         PlayerController = controller;
+        Init(Idle);
     }
 
+    //상태 캐싱 변수
     public Player_Idle Idle { get; }
     public Player_Walk Walk { get; }
     public Player_Run Run { get; }

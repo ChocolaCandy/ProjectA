@@ -418,7 +418,6 @@ GameObject:
   m_Component:
   - component: {fileID: 492847584}
   - component: {fileID: 492847588}
-  - component: {fileID: 492847587}
   - component: {fileID: 492847586}
   - component: {fileID: 492847585}
   m_Layer: 0
@@ -486,36 +485,6 @@ MonoBehaviour:
     m_Bits: 0
   _cameraDistance: 5
   _cameraFOV: 60
---- !u!114 &492847587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 492847583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CollideAgainst:
-    serializedVersion: 2
-    m_Bits: 1
-  m_IgnoreTag: 
-  m_TransparentLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_MinimumDistanceFromTarget: 0.1
-  m_AvoidObstacles: 1
-  m_DistanceLimit: 0
-  m_MinimumOcclusionTime: 0
-  m_CameraRadius: 0.1
-  m_Strategy: 1
-  m_MaximumEffort: 4
-  m_SmoothingTime: 0
-  m_Damping: 0
-  m_DampingWhenOccluded: 0
-  m_OptimalTargetDistance: 0
 --- !u!114 &492847588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,7 +832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb62f3c11e106ac4c9fbba0302348ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneName: Test_Town1
+  SceneName: Test_Town
 --- !u!1 &1259578421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,7 +1291,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 1
+  m_CameraDistance: 10
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0

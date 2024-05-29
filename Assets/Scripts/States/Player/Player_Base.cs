@@ -10,6 +10,7 @@ public abstract class Player_Base : BaseState
 
     protected PlayerStateMachine PlayerStateMachine { get; }
     protected Vector2 PlayerMoveInput { get; private set; }
+    private bool _moving = false;
     private bool _jumping = false;
     private bool _dashing = false;
 
@@ -22,14 +23,16 @@ public abstract class Player_Base : BaseState
             Managers.InputManager.PlayerInput.Dash.started += ChangeStateToDash;
     }
 
-    public override void OnUpdate()
-    {
-        SetOnUpdate();
-    }
-
     public override void OnFixUpdate()
     {
         SetOnFixUpdate();
+    }
+
+    public override void OnUpdate()
+    {
+        if (_moving)
+            PlayerMoveInput = Managers.InputManager.PlayerInput.Move.ReadValue<Vector2>();
+        SetOnUpdate();
     }
 
     public override void OnExit()
@@ -42,17 +45,14 @@ public abstract class Player_Base : BaseState
     }
 
     protected virtual void SetOnEnter() { }
-    protected virtual void SetOnUpdate() { }
     protected virtual void SetOnFixUpdate() { }
+    protected virtual void SetOnUpdate() { }
     protected virtual void SetOnExit() { }
 
-
-    /// <summary>
-    /// InputAcion의 플레이어 Move값 읽는 메서드
-    /// </summary>
-    protected void GetMoveInput()
+    protected void AddMoving()
     {
-        PlayerMoveInput = Managers.InputManager.PlayerInput.Move.ReadValue<Vector2>();
+        if (!_moving)
+            _moving = true;
     }
 
     protected void AddJumping()
@@ -68,28 +68,49 @@ public abstract class Player_Base : BaseState
     }
 
     #region ChangeState
+    /// <summary>
+    /// IDLE상태로 변환
+    /// </summary>
     protected void ChangeStateToIdle()
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Idle);
     }
 
+    /// <summary>
+    /// Move상태로 변환
+    /// </summary>
     protected void ChangeStateToWalk()
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Walk);
     }
+
+    /// <summary>
+    /// Run상태로 변환
+    /// </summary>
     protected void ChangeStateToRun()
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Run);
     }
+
+    /// <summary>
+    /// 이전상태로 변환
+    /// </summary>
     protected void ChangeStateToPast()
     {
-        PlayerStateMachine.ChangeState(PlayerStateMachine._pastState);
+        PlayerStateMachine.ChangePastState();
     }
 
+    /// <summary>
+    /// Dash상태로 변환
+    /// </summary>
     private void ChangeStateToDash(InputAction.CallbackContext context)
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Dash);
     }
+
+    /// <summary>
+    /// Jump상태로 변환
+    /// </summary>
     private void ChangeStateToJump(InputAction.CallbackContext context)
     {
         PlayerStateMachine.ChangeState(PlayerStateMachine.Jump);

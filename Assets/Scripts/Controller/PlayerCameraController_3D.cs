@@ -1,10 +1,8 @@
 using Cinemachine;
-using System;
+using System; //Test
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CinemachineVirtualCamera))]
-[RequireComponent(typeof(CinemachineCollider))]
 public class PlayerCameraController_3D : MonoBehaviour
 {
     #region SerializeFields
@@ -50,11 +48,16 @@ public class PlayerCameraController_3D : MonoBehaviour
     //Value of VirtualCamera clipPlane
     private (float, float) _clipPlane = (0.1f, 500f);
 
+    //Value of FramingTransposer Damping
+    private float Damping_X = 0.0f;
+    private float Damping_Y = 0.3f;
+    private float Damping_Z = 0.0f;
+
     //Value of FramingTransposer DeadZone
     private float DeadZoneWidth = 0.0f;
     private float DeadZoneHeight = 0.0f;
     private float SoftDeadZoneWidth = 0.0f;
-    private float SoftDeadZoneHeight = 0.0f;
+    private float SoftDeadZoneHeight = 0.5f;
 
     //Value of CinemachinePOV horizontal axis
     private float _minMouseValueX = -180.0f;
@@ -87,53 +90,32 @@ public class PlayerCameraController_3D : MonoBehaviour
     //Value of Min/Max camera distance
     private float _minDistance = 1.0f;
     private float _maxDistance = 10.0f;
-
     #endregion
 
     #region Methods
-    /// <summary>
-    /// Player오브젝트의 FocusPoint오브젝트 Transform 반환 메서드
-    /// </summary>
-    /// <returns>Transform or Null</returns>
-    private Transform GetFocusObject()
-    {
-        GameObject player = GameObject.FindWithTag(TagName.Player3D);
-        if (!player)
-            return null;
-        Transform focusPoint = player.transform.Find(ObjectName.FocusPoint);
-        if (!focusPoint)
-        {
-            focusPoint = CreateFocusPoint(player);
-        }
-        return focusPoint;
-    }
-
-    /// <summary>
-    /// FocusPoint오브젝트 생성 메서드
-    /// </summary>
-    /// <returns>Transform or Null</returns>
-    private Transform CreateFocusPoint(GameObject player)
-    {
-        CapsuleCollider collider;
-        Transform focusPoint = new GameObject(ObjectName.FocusPoint).transform;
-        focusPoint.SetParent(player.transform);
-        focusPoint.localRotation = Quaternion.identity;
-        if (player.TryGetComponent<CapsuleCollider>(out collider))
-            focusPoint.localPosition = Vector3.up * collider.height;
-        else
-            focusPoint.localPosition = Vector3.zero;
-        return focusPoint;
-    }
-
+    #region CameraSetting Methods
     /// <summary>
     /// 카메라 초기화 로직 메서드
     /// </summary>
     private void InitCameraSetting()
     {
+        GetCameraComponents();
         LensSetting();
         FollowingSetting();
         LookAtSetting();
-        ColliderSetting();  
+        ColliderSetting();
+    }
+
+    /// <summary>
+    /// 카메라 컴포넌트 세팅 메서드
+    /// </summary>
+    private void GetCameraComponents()
+    {
+        _camera = GetComponent<CinemachineVirtualCamera>();
+        _cameraCollider = gameObject.GetOrAddComponent<CinemachineCollider>();
+        _camera.AddExtension(_cameraCollider);
+        _cameraFollowSetting = _camera.AddCinemachineComponent<CinemachineFramingTransposer>();
+        _cameraLookAtSetting = _camera.AddCinemachineComponent<CinemachinePOV>();
     }
 
     /// <summary>
@@ -161,6 +143,9 @@ public class PlayerCameraController_3D : MonoBehaviour
     private void FollowingSetting()
     {
         _cameraFollowSetting.m_CameraDistance = _initDistance;
+        _cameraFollowSetting.m_XDamping = Damping_X;
+        _cameraFollowSetting.m_YDamping = Damping_Y;
+        _cameraFollowSetting.m_ZDamping = Damping_Z;
         _cameraFollowSetting.m_DeadZoneWidth = DeadZoneWidth;
         _cameraFollowSetting.m_DeadZoneHeight = DeadZoneHeight;
         _cameraFollowSetting.m_SoftZoneWidth = SoftDeadZoneWidth;
@@ -219,12 +204,58 @@ public class PlayerCameraController_3D : MonoBehaviour
     }
 
     /// <summary>
+    /// 플레이어 타겟 설정 메서드
+    /// </summary>
+    /// <returns></returns>
+    private void SetCameraTarget()
+    {
+        _focusObject = GetFocusObject();
+
+        //Test
+        if (!_focusObject)
+            throw new Exception("카메라의 표적이 존재하지 않습니다.");
+    }
+
+    /// <summary>
+    /// Player오브젝트의 FocusPoint오브젝트 Transform 반환 메서드
+    /// </summary>
+    private Transform GetFocusObject()
+    {
+        GameObject player = GameObject.FindWithTag(TagName.Player3D);
+        if (!player)
+            return null;
+        Transform focusPoint = player.transform.Find(ObjectName.FocusPoint);
+        if (!focusPoint)
+        {
+            focusPoint = CreateFocusPoint(player);
+        }
+        return focusPoint;
+    }
+
+    /// <summary>
+    /// FocusPoint오브젝트 생성 메서드
+    /// </summary>
+    private Transform CreateFocusPoint(GameObject player)
+    {
+        CapsuleCollider collider;
+        Transform focusPoint = new GameObject(ObjectName.FocusPoint).transform;
+        focusPoint.SetParent(player.transform);
+        focusPoint.localRotation = Quaternion.identity;
+        if (player.TryGetComponent<CapsuleCollider>(out collider))
+            focusPoint.localPosition = Vector3.up * collider.height;
+        else
+            focusPoint.localPosition = Vector3.zero;
+        return focusPoint;
+    }
+    #endregion
+    #region Zoom Methods
+    /// <summary>
     /// 카메라 충돌 체크
     /// </summary>
     /// <returns></returns>
     private bool CheckCollision()
     {
-        if (_camera.transform.position != Camera.main.transform.position)
+        if (transform.position != Camera.main.transform.position)
             return true;
         ResetCollideZoomInValue();
         return false;
@@ -252,14 +283,13 @@ public class PlayerCameraController_3D : MonoBehaviour
         if (_collideState && !_isCollideZoom)
         {
             _isCollideZoom = true;
-            _distanceSpeed = Vector3.Distance(Camera.main.transform.position, _camera.transform.position);
+            _distanceSpeed = Vector3.Distance(Camera.main.transform.position, transform.position);
             _cameraCollider.m_Damping = 0.0f;
             _cameraDistance -= _distanceSpeed;
         }
 
         _cameraDistance = Mathf.Clamp(_cameraDistance + -(wheelInput * _scrollSensitivity), _minDistance, _maxDistance);
     }
-
     /// <summary>
     /// 줌 메서드
     /// </summary>
@@ -272,27 +302,17 @@ public class PlayerCameraController_3D : MonoBehaviour
         _cameraFollowSetting.m_CameraDistance = Mathf.Lerp(_cameraFollowSetting.m_CameraDistance, _cameraDistance, lerpSpeed * Time.deltaTime);
     }
     #endregion
+    #endregion
 
     private void Awake()
     {
-        _camera = GetComponent<CinemachineVirtualCamera>();
-        _cameraCollider = GetComponent<CinemachineCollider>();
-        _cameraFollowSetting = _camera.AddCinemachineComponent<CinemachineFramingTransposer>();
-        _cameraLookAtSetting = _camera.AddCinemachineComponent<CinemachinePOV>();
         InitCameraSetting();
-        Debug.Log("Camera Awake");
     }
 
     private void Start()
     {
-        _focusObject = GetFocusObject();
-        if (!_focusObject)
-        {
-            //Exception Handling
-            return;
-        }
+        SetCameraTarget();
         CameraTargetSetting();
-        Debug.Log("Camera Start");
     }
 
     private void LateUpdate()

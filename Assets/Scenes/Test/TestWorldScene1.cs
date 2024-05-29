@@ -1,23 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TestWorldScene1 : BaseSceneManager
+public class TestWorldScene1 : MonoBehaviour
 {
-    private void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SceneManager.LoadScene("TestWorld");
-        }
-    }
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
-    {
-        Debug.Log("TestWorld1 Load");
+        SceneManager.sceneLoaded += a;
     }
 
-    protected override void OnSceneUnLoaded(Scene scene)
+    private void a(Scene arg0, LoadSceneMode arg1)
     {
-        Debug.Log("TestWorld1 UnLoad");
+        Debug.Log("2");
     }
-
 }

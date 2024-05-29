@@ -7,13 +7,13 @@ public class Player_Idle : Player_Base
     protected override void SetOnEnter()
     {
         PlayerStateMachine.PlayerController.PlayerRigidbody.velocity = Vector3.zero;
+        AddMoving();
         AddJumping();
         AddDashing();
     }
 
     protected override void SetOnUpdate()
     {
-        GetMoveInput();
         if (PlayerMoveInput != Vector2.zero)
             ChangeStateToWalk();
     }

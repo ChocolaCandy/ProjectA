@@ -2,65 +2,72 @@ using UnityEngine;
 
 public class BaseStateMachine
 {
-    public BaseState _currentState;
-    public BaseState _pastState;
-    private bool _isInit = false; 
+    public BaseState _currentState; //현재상태
+    public BaseState _pastState; //이전상태
 
-    public void Init(BaseState initState)
+    private bool _isInit = false;  //초기화 여부
+
+    /// <summary>
+    /// 초기상태 초기화 메서드
+    /// </summary>
+    /// <param name="initState"></param>
+    protected void Init(BaseState initState)
     {
-        if (_isInit)
-        {
-            if(UtilityField.IsDebugMode) Debug.Log("Already initialized");
+        if (_isInit || initState == null)
             return;
-        }
-        if(!ChangeState(initState, false))
-        {
-            if (UtilityField.IsDebugMode) Debug.Log("Initialized failed");
-            return;
-        }
-        if (UtilityField.IsDebugMode) Debug.Log("Initialized");
+        _currentState = initState;
+        _currentState.OnEnter();
         _isInit = true;
     }
 
+    /// <summary>
+    /// FixedUpdate문에서의 실행 메서드
+    /// </summary>
+    public void OnFixUpdate()
+    {
+        if (!_isInit)
+            return;
+        _currentState.OnFixUpdate();
+    }
+
+    /// <summary>
+    /// Update문에서의 실행 메서드
+    /// </summary>
     public void OnUpdate()
     {
         if(!_isInit)
-        {
-            if (UtilityField.IsDebugMode) Debug.Log("No initialized");
             return;
-        }
         Debug.Log(_currentState);
         _currentState.OnUpdate();
     }
 
-    public void OnFixUpdate()
+    /// <summary>
+    /// OnTriggerEnter문에서의 실행 메서드
+    /// </summary>
+    public void OnTrigger_Enter(Collider other)
     {
-        if (!_isInit)
-        {
-            if (UtilityField.IsDebugMode) Debug.Log("No initialized");
-            return;
-        }
-        _currentState.OnFixUpdate();
+        _currentState.OnTriggerEnter(other);
     }
 
-    public bool ChangeState(BaseState State, bool init = true)
+    /// <summary>
+    /// 상태 변환 메서드
+    /// </summary>
+    public bool ChangeState(BaseState State)
     {
-        if (!_isInit && init)
-        {
-            if (UtilityField.IsDebugMode) Debug.Log("No initialized");
+        if (!_isInit || _currentState == State || State == null)
             return false;
-        }
-        if (_currentState == State || State == null)
-            return false;
-        _currentState?.OnExit();
+        _currentState.OnExit();
         _pastState = _currentState;
         _currentState = State;
         _currentState.OnEnter();
         return true;
     }
 
-    public void OnTriggerEnter(Collider other)
+    /// <summary>
+    /// 이전상태 변환 메서드
+    /// </summary>
+    public void ChangePastState()
     {
-        _currentState.OnTriggerEnter(other);
+        ChangeState(_pastState);
     }
 }

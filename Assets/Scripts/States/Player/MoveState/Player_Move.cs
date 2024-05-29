@@ -20,11 +20,11 @@ public abstract class Player_Move : Player_Base
     {
         SetSpeed();
         AddJumping();
+        AddMoving();
     }
 
     protected override void SetOnUpdate()
     {
-        GetMoveInput();
         if (PlayerMoveInput == Vector2.zero)
             ChangeStateToIdle();
     }

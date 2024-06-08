@@ -2,3 +2,4 @@ https://c-candy.tistory.com/1 - 20240531 유니티 생명주기 포스팅
 https://c-candy.tistory.com/2 - 20240601 Transform 포스팅
 https://c-candy.tistory.com/3 - 20240605 오브젝트 이동 포스팅
 https://c-candy.tistory.com/4 - 20240606 오브젝트 회전 포스팅
+https://c-candy.tistory.com/5 - 20240607 부드러운 이동과 회전 (보간 포함)

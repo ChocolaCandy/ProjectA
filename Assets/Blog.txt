@@ -5,4 +5,4 @@ https://c-candy.tistory.com/4 - 20240606 오브젝트 회전 포스팅
 https://c-candy.tistory.com/5 - 20240607 부드러운 이동과 회전 (보간 포함) 
 https://c-candy.tistory.com/6 - 20240611~20240612 게임 오브젝트
 https://c-candy.tistory.com/7 - 20240613~20240615 Rigidbody (물리 엔진)
-https://c-candy.tistory.com/8 - 20240617~
+https://c-candy.tistory.com/8 - 20240617~20240618

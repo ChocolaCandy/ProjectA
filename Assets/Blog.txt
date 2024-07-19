@@ -12,4 +12,4 @@ https://c-candy.tistory.com/11 - 20240702~20240704 Tag
 https://c-candy.tistory.com/12 - 20240708~20240710 Animator 
 https://c-candy.tistory.com/13 - 20240711~20240713 AudioSource
 https://c-candy.tistory.com/14 - 20240715~20240717 Navigation
-https://c-candy.tistory.com/14 - 20240719~ Camera
+https://c-candy.tistory.com/14 - 20240719~20240720 Camera

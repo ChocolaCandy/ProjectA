@@ -13,4 +13,4 @@ https://c-candy.tistory.com/12 - 20240708~20240710 Animator
 https://c-candy.tistory.com/13 - 20240711~20240713 AudioSource
 https://c-candy.tistory.com/14 - 20240715~20240717 Navigation
 https://c-candy.tistory.com/15 - 20240719~20240720 Camera
-https://c-candy.tistory.com/16 - 20240722  Cinemachine 
+https://c-candy.tistory.com/16 - 20240722~20240725  Cinemachine 

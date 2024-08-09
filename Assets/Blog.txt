@@ -16,4 +16,4 @@ https://c-candy.tistory.com/15 - 20240719~20240720 Camera
 https://c-candy.tistory.com/16 - 20240722~20240725 Cinemachine 
 https://c-candy.tistory.com/17 - 20240726~20240729 Light
 https://c-candy.tistory.com/18 - 20240730~20240731 Scene
-https://c-candy.tistory.com/20 - 20240801~20240806 UI (Image, Text, Toggle, Button)
+https://c-candy.tistory.com/20 - 20240801~20240806 UI (Image, Text, Toggle, Button, Slider)

@@ -20,4 +20,4 @@ https://c-candy.tistory.com/19 - 20240801~20240904 UI (Image, Text, Toggle, Butt
 https://c-candy.tistory.com/20 - 20240905~20240910 UI (Canvas)
 https://c-candy.tistory.com/21 - 20240912~20240913 Coroutine
 https://c-candy.tistory.com/22 - 20240914~20240915 Input
-https://c-candy.tistory.com/23 - 20240917 InputAction
+https://c-candy.tistory.com/23 - 20240917~20240919 InputAction

@@ -22,4 +22,4 @@ https://c-candy.tistory.com/21 - 20240912~20240913 Coroutine
 https://c-candy.tistory.com/22 - 20240914~20240915 Input
 https://c-candy.tistory.com/23 - 20240917~20240919 InputAction
 https://c-candy.tistory.com/24 - 20240920~20240921 Time
-https://c-candy.tistory.com/25 - 20240921~ AssetBundle
+https://c-candy.tistory.com/25 - 20240921~20240925 AssetBundle

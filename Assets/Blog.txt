@@ -26,3 +26,4 @@ https://c-candy.tistory.com/25 - 20240921~20240925 AssetBundle
 https://c-candy.tistory.com/26 - 20240926~20240927 WWW
 https://c-candy.tistory.com/27 - 20240928~20241001 UnityWebRequest
 https://c-candy.tistory.com/27 - 20241002~20241006 FileParsing (JSON, XML) 
+https://c-candy.tistory.com/27 - 20241008~ Resources

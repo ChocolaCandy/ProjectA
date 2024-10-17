@@ -29,4 +29,4 @@ https://c-candy.tistory.com/28 - 20241002~20241006 FileParsing (JSON, XML)
 https://c-candy.tistory.com/29 - 20241007~20241008 Resources
 https://c-candy.tistory.com/30 - 20241009~20241010 Package
 https://c-candy.tistory.com/31 - 20241011~20241013 Sky 
-https://c-candy.tistory.com/32 - 20241015 Audio
+https://c-candy.tistory.com/32 - 20241015 Audio (AudioClip, AudioListener, AudioSource[ing])

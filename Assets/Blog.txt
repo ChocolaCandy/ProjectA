@@ -30,4 +30,4 @@ https://c-candy.tistory.com/29 - 20241007~20241008 Resources
 https://c-candy.tistory.com/30 - 20241009~20241010 Package
 https://c-candy.tistory.com/31 - 20241011~20241013 Sky 
 https://c-candy.tistory.com/32 - 20241015~20241018 Audio (AudioClip, AudioListener, AudioSource)
-https://c-candy.tistory.com/33 - 20241019 AudioFilter (Chorus, Distortion, Echo, HighPass, LowPass)
+https://c-candy.tistory.com/33 - 20241019 AudioFilter (Chorus, Distortion, Echo, HighPass, LowPass, Reverb)

@@ -33,4 +33,4 @@ https://c-candy.tistory.com/32 - 20241015~20241018 Audio (AudioClip, AudioListen
 https://c-candy.tistory.com/33 - 20241019~20241022 AudioFilter (Chorus, Distortion, Echo, HighPass, LowPass, Reverb)
 https://c-candy.tistory.com/34 - 20241024~20241025 Unity Attribute
 https://c-candy.tistory.com/35 - 20241026~20241029 Video Player
-https://c-candy.tistory.com/36 - 20241030 Terrain
+https://c-candy.tistory.com/36 - 20241030 Terrain 

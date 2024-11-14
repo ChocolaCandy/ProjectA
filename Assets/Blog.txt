@@ -35,4 +35,4 @@ https://c-candy.tistory.com/34 - 20241024~20241025 Unity Attribute
 https://c-candy.tistory.com/35 - 20241026~20241029 Video Player
 https://c-candy.tistory.com/36 - 20241030~20241103 Terrain(Tools)
 https://c-candy.tistory.com/37 - 20241104~20241110 Terrain(Tree, Wind Zone)
-https://c-candy.tistory.com/38 - 20241111 Localization 
+https://c-candy.tistory.com/38 - 20241111~20241114 Localization 

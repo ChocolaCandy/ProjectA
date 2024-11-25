@@ -37,4 +37,4 @@ https://c-candy.tistory.com/36 - 20241030~20241103 Terrain(Tools)
 https://c-candy.tistory.com/37 - 20241104~20241110 Terrain(Tree, Wind Zone)
 https://c-candy.tistory.com/38 - 20241111~20241114 Localization
 https://c-candy.tistory.com/39 - 20241115~20241122 Visual Effects(Particle System)
-https://c-candy.tistory.com/40 - 20241122 Visual Effects(Decal, Flare)
+https://c-candy.tistory.com/40 - 20241122 Visual Effects(Decal, Flare) 

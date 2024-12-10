@@ -47,4 +47,4 @@ https://c-candy.tistory.com/54 - 20241204~20241204 문 (조건문, 반복문, �
 https://c-candy.tistory.com/55 - 20241205~20241205 함수, 메서드
 https://c-candy.tistory.com/56 - 20241205~20241206 구조체와 클래스
 https://c-candy.tistory.com/57 - 20241208~20241209 상속과 다형성
-https://c-candy.tistory.com/58 - 20241209~ 인터페이스
+https://c-candy.tistory.com/58 - 20241209~20241210 인터페이스

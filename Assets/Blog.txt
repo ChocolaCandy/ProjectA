@@ -51,3 +51,4 @@ https://c-candy.tistory.com/58 - 20241209~20241210 인터페이스
 https://c-candy.tistory.com/59 - 20241212~20241212 접근제한자와 프로퍼티
 https://c-candy.tistory.com/60 - 20241213~20241213 Static
 https://c-candy.tistory.com/61 - 20241213~20241214 오버라이딩 오버로딩
+https://c-candy.tistory.com/62 - 20241216~20241216 열거형

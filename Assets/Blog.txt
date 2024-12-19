@@ -54,3 +54,5 @@ https://c-candy.tistory.com/61 - 20241213~20241214 오버라이딩 오버로딩
 https://c-candy.tistory.com/62 - 20241216~20241216 열거형
 https://c-candy.tistory.com/63 - 20241217~20241217 Nullable
 https://c-candy.tistory.com/64 - 20241218~20241218 Delegate, Event
+https://c-candy.tistory.com/65 - 20241218~20241218 매개변수 한정자
+https://c-candy.tistory.com/66 - 20241218~20241218 타입 캐스팅

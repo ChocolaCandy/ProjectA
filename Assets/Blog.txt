@@ -58,4 +58,5 @@ https://c-candy.tistory.com/65 - 20241219~20241219 매개변수 한정자
 https://c-candy.tistory.com/66 - 20241219~20241219 타입 캐스팅
 https://c-candy.tistory.com/67 - 20241220~20241220 제네릭
 https://c-candy.tistory.com/68 - 20241221~20241221 람다식
-https://c-candy.tistory.com/69 - 20241221~ linq
+https://c-candy.tistory.com/69 - 20241221~20241223 linq
+https://c-candy.tistory.com/70 - 20241223~20241223 스레드 (Thread)

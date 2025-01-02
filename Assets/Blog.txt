@@ -63,4 +63,5 @@ https://c-candy.tistory.com/70 - 20241223~20241223 스레드 (Thread)
 https://c-candy.tistory.com/71 - 20241224~20241224 동기 비동기
 https://c-candy.tistory.com/72 - 20241225~20241225 예외처리
 https://c-candy.tistory.com/73 - 20241228~20241230 리플렉션
-https://c-candy.tistory.com/73 - 20250101~20250101 Mathf
+https://c-candy.tistory.com/74 - 20250101~20250101 Mathf
+https://c-candy.tistory.com/75 - 20250102~20250102 File.IO

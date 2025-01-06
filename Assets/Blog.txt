@@ -65,3 +65,4 @@ https://c-candy.tistory.com/72 - 20241225~20241225 예외처리
 https://c-candy.tistory.com/73 - 20241228~20241230 리플렉션
 https://c-candy.tistory.com/74 - 20250101~20250101 Mathf
 https://c-candy.tistory.com/75 - 20250102~20250103 File.IO
+https://c-candy.tistory.com/75 - 20250104~20250106 디자인 패턴(추상 팩토리(Abstract Factory), 팩토리 메서드(Factory Method), 빌더(Builder), 프로토타입(Prototype))

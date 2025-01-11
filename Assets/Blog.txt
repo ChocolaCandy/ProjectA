@@ -67,4 +67,4 @@ https://c-candy.tistory.com/74 - 20250101~20250101 Mathf
 https://c-candy.tistory.com/75 - 20250102~20250103 File.IO
 https://c-candy.tistory.com/76 - 20250104~20250107 디자인 패턴(추상 팩토리(Abstract Factory), 팩토리 메서드(Factory Method), 빌더(Builder), 프로토타입(Prototype), 싱글톤(Singleton))
 https://c-candy.tistory.com/77 - 20250107~20250109 디자인 패턴(어댑터, 브리지, 컴포지트, 데코레이터, 파사드(Facade) 플라이웨이트, 프록시)
-https://c-candy.tistory.com/78 - 20250110~ 디자인 패턴 (책임 체인, 커맨드, 인터프리터, 반복자(iterator))
+https://c-candy.tistory.com/78 - 20250110~ 디자인 패턴 (책임 체인, 커맨드, 인터프리터, 반복자(iterator), 중재자(Mediator), 메멘토, 옵저버(Observer))

@@ -71,3 +71,4 @@ https://c-candy.tistory.com/78 - 20250110~20250113 디자인 패턴 (책임 체�
 https://c-candy.tistory.com/79 - 20250114~20250114 REST, REST API, RESTful
 https://c-candy.tistory.com/80 - 20250116~20250116 파일 경로
 https://c-candy.tistory.com/81 - 20250117~20250117 네임스페이스
+https://c-candy.tistory.com/82 - 20250119~20250119 Joint

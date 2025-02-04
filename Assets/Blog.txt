@@ -76,4 +76,4 @@ https://c-candy.tistory.com/83 - 20250120~20250121 잡 시스템
 https://c-candy.tistory.com/84 - 20250122~20250123 Behavior Tree (개념)
 https://c-candy.tistory.com/85 - 20250124~20250127  Behavior Tree (예제)
 https://c-candy.tistory.com/86 - 20250131~20250201 유니티 에디터#1
-https://c-candy.tistory.com/87 - 20250203 유니티 에디터#2
+https://c-candy.tistory.com/87 - 20250203~20250204 유니티 에디터#2

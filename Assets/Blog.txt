@@ -79,4 +79,4 @@ https://c-candy.tistory.com/86 - 20250131~20250201 유니티 에디터#1
 https://c-candy.tistory.com/87 - 20250203~20250205 유니티 에디터#2
 https://c-candy.tistory.com/88 - 20250206~20250209 마우스 이벤트
 https://c-candy.tistory.com/89 - 20250211~20250212 키보드 이벤트
-https://c-candy.tistory.com/90 - 20250214 데이터 저장(Save)
+https://c-candy.tistory.com/90 - 20250214~20250216 데이터 저장(Save)

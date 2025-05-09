@@ -100,4 +100,4 @@ https://c-candy.tistory.com/106 - 20250421~20250421 다익스트라
 https://c-candy.tistory.com/107 - 20250422~20250425 A* 
 https://c-candy.tistory.com/108 - 20250426~20250429 이진트리
 https://c-candy.tistory.com/109 - 20250501~20250505 쿼드트리
-https://c-candy.tistory.com/110 - 20250507~ 옥트리 
+https://c-candy.tistory.com/110 - 20250507~20250509 옥트리 

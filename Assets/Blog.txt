@@ -123,4 +123,5 @@ https://c-candy.tistory.com/129 - 20250721~20250724 몬스터
 https://c-candy.tistory.com/130 - 20250726~20250731 UI/UX
 https://c-candy.tistory.com/131 - 20250801~20250804 일시정지(설정)
 https://c-candy.tistory.com/132 - 20250805~20250807 저장
-https://c-candy.tistory.com/133 - 20250808~20250811 공격(콜라이더/UI) 
+https://c-candy.tistory.com/133 - 20250808~20250811 공격(콜라이더/UI)
+https://c-candy.tistory.com/134 - 20250814 아이템 드랍

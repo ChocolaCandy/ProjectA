@@ -127,4 +127,4 @@ https://c-candy.tistory.com/133 - 20250808~20250811 공격(콜라이더/UI)
 https://c-candy.tistory.com/134 - 20250814~20250815 아이템 드랍
 https://c-candy.tistory.com/135 - 20250816~20250820 퀘스트
 https://c-candy.tistory.com/136 - 20250822~20250827 펫 시스템
-https://c-candy.tistory.com/137 - 20250828~202508 인벤토리  
+https://c-candy.tistory.com/137 - 20250828~20250831 인벤토리  

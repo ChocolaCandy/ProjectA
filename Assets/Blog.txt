@@ -129,4 +129,4 @@ https://c-candy.tistory.com/135 - 20250816~20250820 퀘스트
 https://c-candy.tistory.com/136 - 20250822~20250827 펫 시스템
 https://c-candy.tistory.com/137 - 20250828~20250831 인벤토리
 https://c-candy.tistory.com/138 - 20250905~20250909 게임매니저
-https://c-candy.tistory.com/139 - 20250910 인벤정렬  
+https://c-candy.tistory.com/139 - 20250910~20250913 인벤정렬  

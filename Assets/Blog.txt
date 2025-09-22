@@ -131,4 +131,4 @@ https://c-candy.tistory.com/137 - 20250828~20250831 인벤토리
 https://c-candy.tistory.com/138 - 20250905~20250909 게임매니저
 https://c-candy.tistory.com/139 - 20250910~20250913 인벤정렬
 https://c-candy.tistory.com/140 - 20250915~20250917 데이터매니저
-https://c-candy.tistory.com/141 - 20250919 DB 
+https://c-candy.tistory.com/141 - 20250919  DB 

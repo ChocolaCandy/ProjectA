@@ -132,6 +132,6 @@ https://c-candy.tistory.com/138 - 20250905~20250909 게임매니저
 https://c-candy.tistory.com/139 - 20250910~20250913 인벤정렬
 https://c-candy.tistory.com/140 - 20250915~20250917 데이터매니저
 https://c-candy.tistory.com/141 - 20250919~20250923 DB
-https://c-candy.tistory.com/142 - 20250923~20250928 DB
+https://c-candy.tistory.com/142 - 20250923~20250928 DB 
 https://c-candy.tistory.com/143 - 20250930~20251011 Sky 설계(시간)
 https://c-candy.tistory.com/144 - 20251020 오디오
